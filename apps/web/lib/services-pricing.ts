@@ -4,7 +4,7 @@ export interface ServiceOption {
     id: string;
     name: string;
     description: string;
-    icon: string;
+    image: string;
     basePrice: number;
     priceUnit: "sqft" | "linear_ft" | "fixed";
     minSize: number;
@@ -32,7 +32,7 @@ export const SERVICES: ServiceOption[] = [
         id: "patio",
         name: "Patio",
         description: "Stamped concrete or paver patios for outdoor living",
-        icon: "🪨",
+        image: "https://picsum.photos/seed/patio/800/600",
         basePrice: 15, // per sqft
         priceUnit: "sqft",
         minSize: 100,
@@ -49,7 +49,7 @@ export const SERVICES: ServiceOption[] = [
         id: "deck",
         name: "Deck",
         description: "Wood or composite decking for elevated outdoor spaces",
-        icon: "🪵",
+        image: "https://picsum.photos/seed/deck/800/600",
         basePrice: 25, // per sqft
         priceUnit: "sqft",
         minSize: 100,
@@ -66,7 +66,7 @@ export const SERVICES: ServiceOption[] = [
         id: "pergola",
         name: "Pergola",
         description: "Shade structures for patios and outdoor areas",
-        icon: "🏛️",
+        image: "https://picsum.photos/seed/pergola/800/600",
         basePrice: 3500, // base price for small
         priceUnit: "fixed",
         minSize: 100,
@@ -83,7 +83,7 @@ export const SERVICES: ServiceOption[] = [
         id: "outdoor_kitchen",
         name: "Outdoor Kitchen",
         description: "Built-in grills, counters, and cooking stations",
-        icon: "🍳",
+        image: "https://picsum.photos/seed/kitchen/800/600",
         basePrice: 8000, // base price
         priceUnit: "fixed",
         minSize: 1,
@@ -100,7 +100,7 @@ export const SERVICES: ServiceOption[] = [
         id: "fire_pit",
         name: "Fire Pit",
         description: "Gathering spots with gas or wood-burning fire features",
-        icon: "🔥",
+        image: "https://picsum.photos/seed/firepit/800/600",
         basePrice: 2500,
         priceUnit: "fixed",
         minSize: 1,
@@ -117,7 +117,7 @@ export const SERVICES: ServiceOption[] = [
         id: "landscape",
         name: "Landscaping",
         description: "Desert-friendly plants, hardscape, and irrigation",
-        icon: "🌵",
+        image: "https://picsum.photos/seed/landscape/800/600",
         basePrice: 8, // per sqft
         priceUnit: "sqft",
         minSize: 200,

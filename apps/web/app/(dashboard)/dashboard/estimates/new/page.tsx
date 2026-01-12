@@ -14,6 +14,7 @@ import {
     ShoppingCart,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface EstimateItem {
     service: ServiceOption;
@@ -101,7 +102,14 @@ export default function NewEstimatePage() {
                             onClick={() => handleSelectService(service)}
                             className="group rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-left transition-all hover:border-zinc-600 hover:shadow-lg"
                         >
-                            <div className="mb-4 text-4xl">{service.icon}</div>
+                            <div className="relative mb-4 h-40 w-full overflow-hidden rounded-lg">
+                                <Image
+                                    src={service.image}
+                                    alt={service.name}
+                                    fill
+                                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                                />
+                            </div>
                             <h3 className="text-lg font-semibold text-white group-hover:text-zinc-100">
                                 {service.name}
                             </h3>
@@ -135,7 +143,14 @@ export default function NewEstimatePage() {
 
                         {/* Service Header */}
                         <div className="flex items-center gap-4">
-                            <div className="text-4xl">{selectedService.icon}</div>
+                            <div className="relative h-16 w-16 overflow-hidden rounded-lg">
+                                <Image
+                                    src={selectedService.image}
+                                    alt={selectedService.name}
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
                             <div>
                                 <h2 className="text-xl font-bold text-white">
                                     {selectedService.name}
@@ -186,8 +201,8 @@ export default function NewEstimatePage() {
                                         key={material.id}
                                         onClick={() => setSelectedMaterial(material.id)}
                                         className={`rounded-lg border p-4 text-left transition-all ${selectedMaterial === material.id
-                                                ? "border-white bg-zinc-800"
-                                                : "border-zinc-700 hover:border-zinc-600"
+                                            ? "border-white bg-zinc-800"
+                                            : "border-zinc-700 hover:border-zinc-600"
                                             }`}
                                     >
                                         <div className="flex items-start justify-between">
@@ -294,7 +309,14 @@ export default function NewEstimatePage() {
                                     className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900 p-4"
                                 >
                                     <div className="flex items-center gap-4">
-                                        <div className="text-3xl">{item.service.icon}</div>
+                                        <div className="relative h-16 w-16 overflow-hidden rounded-lg">
+                                            <Image
+                                                src={item.service.image}
+                                                alt={item.service.name}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
                                         <div>
                                             <h4 className="font-medium text-white">
                                                 {item.service.name}
