@@ -24,11 +24,11 @@ export default async function PropertiesPage() {
 
             {properties.length === 0 ? (
                 /* Empty State */
-                <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-700 py-16">
-                    <div className="rounded-full bg-zinc-800 p-4">
-                        <Home className="h-8 w-8 text-zinc-500" />
+                <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-300 bg-zinc-50 py-16">
+                    <div className="rounded-full bg-white p-4 shadow-sm border border-zinc-100">
+                        <Home className="h-8 w-8 text-zinc-400" />
                     </div>
-                    <h3 className="mt-4 text-lg font-medium text-white">No properties yet</h3>
+                    <h3 className="mt-4 text-lg font-medium text-zinc-900">No properties yet</h3>
                     <p className="mt-2 text-sm text-zinc-500">
                         Add your first property to get started with estimates.
                     </p>
@@ -36,21 +36,21 @@ export default async function PropertiesPage() {
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {properties.map((property) => (
-                        <Card key={property.id} className="border-zinc-800 bg-zinc-950">
+                        <Card key={property.id} className="border-zinc-200 bg-white shadow-sm">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium text-white">
+                                <CardTitle className="text-sm font-medium text-zinc-900">
                                     {property.nickname || "Property"}
                                 </CardTitle>
-                                {property.propertyType === 'commercial' ? <Building className="h-4 w-4 text-zinc-500" /> : <Home className="h-4 w-4 text-zinc-500" />}
+                                {property.propertyType === 'commercial' ? <Building className="h-4 w-4 text-zinc-400" /> : <Home className="h-4 w-4 text-zinc-400" />}
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold text-white truncate">{property.streetAddress}</div>
+                                <div className="text-2xl font-bold text-zinc-900 truncate">{property.streetAddress}</div>
                                 <p className="text-xs text-zinc-500 flex items-center mt-1">
                                     <MapPin className="mr-1 h-3 w-3" />
                                     {property.city}, {property.state} {property.zipCode}
                                 </p>
                                 <div className="mt-4">
-                                    <span className="inline-flex items-center rounded-full border border-zinc-800 bg-zinc-900 px-2.5 py-0.5 text-xs font-semibold text-zinc-400 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2">
+                                    <span className="inline-flex items-center rounded-full border border-zinc-200 bg-zinc-100 px-2.5 py-0.5 text-xs font-semibold text-zinc-600 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2">
                                         {property.propertyType.replace("_", " ")}
                                     </span>
                                 </div>

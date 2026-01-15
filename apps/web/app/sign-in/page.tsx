@@ -16,41 +16,41 @@ export default function SignInPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-zinc-950">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-700 border-t-white" />
+            <div className="flex min-h-screen items-center justify-center bg-white">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-200 border-t-zinc-900" />
             </div>
         );
     }
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-950 p-6">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 p-6">
             <div className="w-full max-w-md space-y-8">
                 {/* Logo */}
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold text-white">Backyard Builders</h1>
-                    <p className="mt-2 text-zinc-400">
+                    <h1 className="text-3xl font-bold text-zinc-900">Backyard Builders</h1>
+                    <p className="mt-2 text-zinc-600">
                         Premium outdoor living spaces
                     </p>
                 </div>
 
                 {/* Demo Mode Banner */}
                 {isDemoMode && (
-                    <div className="rounded-lg border border-amber-500/50 bg-amber-500/10 p-4 text-center">
-                        <p className="text-sm text-amber-400">
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-center shadow-sm">
+                        <p className="text-sm text-amber-700 font-medium">
                             🔧 Demo Mode - Firebase not configured
                         </p>
-                        <p className="mt-1 text-xs text-amber-500/70">
+                        <p className="mt-1 text-xs text-amber-600">
                             Click below to continue with demo data
                         </p>
                     </div>
                 )}
 
                 {/* Sign In Card */}
-                <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-8">
-                    <h2 className="text-xl font-semibold text-white text-center">
+                <div className="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm">
+                    <h2 className="text-xl font-semibold text-zinc-900 text-center">
                         Welcome back
                     </h2>
-                    <p className="mt-2 text-sm text-zinc-400 text-center">
+                    <p className="mt-2 text-sm text-zinc-500 text-center">
                         Sign in to access your dashboard
                     </p>
 
@@ -65,7 +65,7 @@ export default function SignInPage() {
                                 signInWithGoogle();
                             }}
 
-                            className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-700 bg-white px-4 py-3 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100"
+                            className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-200 bg-white px-4 py-3 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 hover:text-zinc-900 shadow-sm"
                         >
                             <svg className="h-5 w-5" viewBox="0 0 24 24">
                                 <path

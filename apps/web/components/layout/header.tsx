@@ -28,26 +28,26 @@ export function Header({ className }: HeaderProps) {
         .toUpperCase() || "U";
 
     return (
-        <header className="flex h-16 items-center justify-between border-b border-zinc-800 bg-zinc-950 px-4 lg:px-6">
+        <header className="flex h-16 items-center justify-between border-b border-zinc-200 bg-white px-4 lg:px-6">
             {/* Mobile Menu */}
             <div className="flex items-center gap-4 lg:hidden">
                 <Sheet>
                     <SheetTrigger asChild>
-                        <Button variant="ghost" size="icon" className="text-zinc-400">
+                        <Button variant="ghost" size="icon" className="text-zinc-500">
                             <Menu className="h-5 w-5" />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="w-64 p-0 bg-zinc-950 border-zinc-800">
+                    <SheetContent side="left" className="w-64 p-0 bg-white border-zinc-200">
                         <Sidebar className="border-0" />
                     </SheetContent>
                 </Sheet>
-                <span className="text-lg font-semibold text-white">BB</span>
+                <span className="text-lg font-semibold text-zinc-900">BB</span>
             </div>
 
             {/* Demo Mode indicator */}
             <div className="hidden lg:block">
                 {isDemoMode && (
-                    <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs text-amber-400">
+                    <span className="rounded-full bg-amber-100 px-3 py-1 text-xs text-amber-600 border border-amber-200">
                         Demo Mode
                     </span>
                 )}
@@ -56,7 +56,7 @@ export function Header({ className }: HeaderProps) {
             {/* Right side */}
             <div className="flex items-center gap-4">
                 {/* Notifications */}
-                <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-white">
+                <Button variant="ghost" size="icon" className="text-zinc-500 hover:text-zinc-900">
                     <Bell className="h-5 w-5" />
                 </Button>
 
@@ -64,18 +64,18 @@ export function Header({ className }: HeaderProps) {
                 <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8">
                         <AvatarImage src={user?.photoURL || ""} alt={user?.displayName || "User"} />
-                        <AvatarFallback className="bg-zinc-800 text-white text-sm">
+                        <AvatarFallback className="bg-zinc-100 text-zinc-900 text-sm">
                             {initials}
                         </AvatarFallback>
                     </Avatar>
                     <div className="hidden md:block">
-                        <p className="text-sm font-medium text-white">{user?.displayName || "User"}</p>
+                        <p className="text-sm font-medium text-zinc-900">{user?.displayName || "User"}</p>
                         <p className="text-xs text-zinc-500">{user?.email}</p>
                     </div>
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="text-zinc-400 hover:text-white"
+                        className="text-zinc-500 hover:text-zinc-900"
                         onClick={handleSignOut}
                     >
                         <LogOut className="h-4 w-4" />

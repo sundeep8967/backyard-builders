@@ -36,8 +36,8 @@ export default async function DashboardPage() {
         <div className="space-y-8">
             {/* Welcome */}
             <div>
-                <h1 className="text-3xl font-bold text-white">Welcome back!</h1>
-                <p className="mt-2 text-zinc-400">
+                <h1 className="text-3xl font-bold text-zinc-900">Welcome back!</h1>
+                <p className="mt-2 text-zinc-600">
                     Here&apos;s what&apos;s happening with your properties.
                 </p>
             </div>
@@ -47,16 +47,16 @@ export default async function DashboardPage() {
                 {stats.map((stat) => (
                     <div
                         key={stat.title}
-                        className="rounded-lg border border-zinc-800 bg-zinc-950 p-6"
+                        className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm"
                     >
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-zinc-400">
+                            <span className="text-sm font-medium text-zinc-500">
                                 {stat.title}
                             </span>
-                            <stat.icon className="h-5 w-5 text-zinc-600" />
+                            <stat.icon className="h-5 w-5 text-zinc-400" />
                         </div>
                         <div className="mt-2">
-                            <span className="text-3xl font-bold text-white">{stat.value}</span>
+                            <span className="text-3xl font-bold text-zinc-900">{stat.value}</span>
                         </div>
                         <p className="mt-1 text-sm text-zinc-500">{stat.description}</p>
                     </div>
@@ -64,21 +64,21 @@ export default async function DashboardPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-6">
-                <h2 className="text-lg font-semibold text-white">Quick Actions</h2>
-                <p className="mt-1 text-sm text-zinc-400">
+            <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
+                <h2 className="text-lg font-semibold text-zinc-900">Quick Actions</h2>
+                <p className="mt-1 text-sm text-zinc-500">
                     Get started by adding your first property.
                 </p>
                 <div className="mt-4 flex gap-4">
                     <Link
                         href="/dashboard/properties/new"
-                        className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-100 transition-colors"
+                        className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 transition-colors"
                     >
                         Add Property
                     </Link>
                     <Link
                         href="/dashboard/estimates/new"
-                        className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 transition-colors"
+                        className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 transition-colors"
                     >
                         Request Estimate
                     </Link>

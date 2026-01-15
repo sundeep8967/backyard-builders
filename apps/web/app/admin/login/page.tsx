@@ -34,32 +34,32 @@ export default function AdminLoginPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-zinc-950">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-700 border-t-white" />
+            <div className="flex min-h-screen items-center justify-center bg-white">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-200 border-t-zinc-900" />
             </div>
         );
     }
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-950 p-6">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 p-6">
             <div className="w-full max-w-md space-y-8">
                 {/* Admin Logo */}
                 <div className="text-center">
-                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-900 border border-zinc-800">
-                        <ShieldAlert className="h-6 w-6 text-red-500" />
+                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white border border-zinc-200 shadow-sm">
+                        <ShieldAlert className="h-6 w-6 text-red-600" />
                     </div>
-                    <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
-                    <p className="mt-2 text-zinc-400">
+                    <h1 className="text-2xl font-bold text-zinc-900">Admin Portal</h1>
+                    <p className="mt-2 text-zinc-600">
                         Restricted access for authorized personnel only.
                     </p>
                 </div>
 
                 {/* Sign In Card */}
-                <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-8">
+                <div className="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm">
                     <div className="space-y-4">
                         <button
                             onClick={handleAdminLogin}
-                            className="flex w-full items-center justify-center gap-3 rounded-lg bg-white px-4 py-3 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-200"
+                            className="flex w-full items-center justify-center gap-3 rounded-lg bg-zinc-900 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
                         >
                             <svg className="h-5 w-5" viewBox="0 0 24 24">
                                 <path

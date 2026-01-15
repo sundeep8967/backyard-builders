@@ -49,20 +49,20 @@ export function Sidebar({ className }: SidebarProps) {
     return (
         <div
             className={cn(
-                "relative flex flex-col border-r bg-zinc-950 transition-all duration-300",
+                "relative flex flex-col border-r bg-white transition-all duration-300",
                 collapsed ? "w-16" : "w-64",
                 className
             )}
         >
             {/* Logo */}
-            <div className="flex h-16 items-center border-b border-zinc-800 px-4">
+            <div className="flex h-16 items-center border-b border-zinc-200 px-4">
                 {!collapsed && (
-                    <span className="text-lg font-semibold text-white">
+                    <span className="text-lg font-semibold text-zinc-900">
                         Backyard Builders
                     </span>
                 )}
                 {collapsed && (
-                    <span className="text-lg font-semibold text-white">BB</span>
+                    <span className="text-lg font-semibold text-zinc-900">BB</span>
                 )}
             </div>
 
@@ -78,8 +78,8 @@ export function Sidebar({ className }: SidebarProps) {
                                 className={cn(
                                     "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                                     isActive
-                                        ? "bg-zinc-800 text-white"
-                                        : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white"
+                                        ? "bg-zinc-100 text-zinc-900"
+                                        : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900"
                                 )}
                             >
                                 <item.icon className="h-5 w-5 shrink-0" />
@@ -91,11 +91,11 @@ export function Sidebar({ className }: SidebarProps) {
             </ScrollArea>
 
             {/* Collapse Toggle */}
-            <div className="border-t border-zinc-800 p-2">
+            <div className="border-t border-zinc-200 p-2">
                 <Button
                     variant="ghost"
                     size="sm"
-                    className="w-full justify-center text-zinc-400 hover:text-white"
+                    className="w-full justify-center text-zinc-500 hover:text-zinc-900"
                     onClick={() => setCollapsed(!collapsed)}
                 >
                     {collapsed ? (

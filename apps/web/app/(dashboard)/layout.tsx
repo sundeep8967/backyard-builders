@@ -22,8 +22,8 @@ export default function DashboardLayout({
 
     if (loading) {
         return (
-            <div className="flex h-screen items-center justify-center bg-zinc-900">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-700 border-t-white" />
+            <div className="flex h-screen items-center justify-center bg-white">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-200 border-t-zinc-900" />
             </div>
         );
     }
@@ -33,9 +33,9 @@ export default function DashboardLayout({
     }
 
     return (
-        <div className="flex h-screen bg-zinc-900">
+        <div className="flex h-screen bg-zinc-50">
             {/* Sidebar - hidden on mobile */}
-            <div className="hidden lg:block">
+            <div className="hidden lg:block border-r border-zinc-200 bg-white">
                 <Sidebar />
             </div>
 

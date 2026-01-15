@@ -62,18 +62,18 @@ export function ZipCheck({ variant = "standalone", onSuccess }: ZipCheckProps) {
                     } gap-3`}
             >
                 <div className="relative flex-1">
-                    <MapPin className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-500" />
+                    <MapPin className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-400" />
                     <input
                         type="text"
                         inputMode="numeric"
                         placeholder="Enter your zip code"
                         value={zipCode}
                         onChange={handleInputChange}
-                        className={`w-full rounded-lg border bg-zinc-900 py-3 pl-10 pr-4 text-white placeholder-zinc-500 transition-colors focus:outline-none ${result && !result.isValid
+                        className={`w-full rounded-lg border bg-white py-3 pl-10 pr-4 text-zinc-900 placeholder-zinc-400 transition-colors focus:outline-none ${result && !result.isValid
                             ? "border-red-500 focus:border-red-500"
                             : result && result.inServiceArea
                                 ? "border-green-500 focus:border-green-500"
-                                : "border-zinc-700 focus:border-zinc-500"
+                                : "border-zinc-200 focus:border-zinc-400"
                             }`}
                     />
                 </div>
@@ -81,7 +81,7 @@ export function ZipCheck({ variant = "standalone", onSuccess }: ZipCheckProps) {
                     type="submit"
                     disabled={zipCode.length !== 5 || isChecking}
                     className={`${isHero ? "sm:w-auto" : "w-full"
-                        } bg-white text-zinc-900 hover:bg-zinc-100 disabled:bg-zinc-700 disabled:text-zinc-400`}
+                        } bg-zinc-900 text-white hover:bg-zinc-800 disabled:bg-zinc-100 disabled:text-zinc-400`}
                 >
                     {isChecking ? (
                         <Loader2 className="h-5 w-5 animate-spin" />
@@ -98,10 +98,10 @@ export function ZipCheck({ variant = "standalone", onSuccess }: ZipCheckProps) {
             {result && (
                 <p
                     className={`mt-3 text-sm ${result.inServiceArea
-                        ? "text-green-400"
+                        ? "text-green-600"
                         : result.isValid
-                            ? "text-amber-400"
-                            : "text-red-400"
+                            ? "text-amber-600"
+                            : "text-red-600"
                         }`}
                 >
                     {result.message}
