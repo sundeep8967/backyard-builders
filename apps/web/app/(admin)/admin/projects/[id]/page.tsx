@@ -16,9 +16,10 @@ import { CreateInvoiceDialog } from "@/components/admin/create-invoice-dialog";
 import { InvoiceList } from "@/components/admin/invoice-list";
 import { ProjectMessages } from "@/components/admin/project-messages";
 import { ProjectNotes } from "@/components/admin/project-notes";
+import { NotificationsPopover } from "@/components/admin/notifications-popover";
 import { CreateRFIDialog } from "@/components/admin/create-rfi-dialog";
 import { RFIList } from "@/components/admin/rfi-list";
-import { ChangeOrder, Invoice, Message, ProjectNote, RFI } from "@/lib/admin/projects";
+import { ChangeOrder, Invoice, Message, Notification, ProjectNote, RFI } from "@/lib/admin/projects";
 
 export default function ProjectDashboardPage() {
     const params = useParams();
@@ -79,9 +80,19 @@ export default function ProjectDashboardPage() {
             createdAt: new Date().toISOString()
         };
 
+        const notif: Notification = {
+            id: `notif-${Date.now()}`,
+            title: "Invoice Drafted",
+            message: `Draft invoice '${inv.title}' created for $${inv.amount.toLocaleString()}.`,
+            type: "info",
+            read: false,
+            timestamp: new Date().toISOString()
+        };
+
         setProject({
             ...project,
-            invoices: [...(project.invoices || []), inv]
+            invoices: [...(project.invoices || []), inv],
+            notifications: [...(project.notifications || []), notif]
         });
     };
 
@@ -130,18 +141,41 @@ export default function ProjectDashboardPage() {
     };
 
     const handleSimulateAnswerRFI = (id: string) => {
+        let notif: Notification | undefined;
+
+        const updatedRFIs = (project.rfis || []).map(r => {
+            if (r.id === id) {
+                if (r.status === "open") {
+                    notif = {
+                        id: `notif-${Date.now()}`,
+                        title: "RFI Answered",
+                        message: `Client answered RFI: ${r.question}`,
+                        type: "success",
+                        read: false,
+                        timestamp: new Date().toISOString()
+                    };
+                    return { ...r, status: "answered", answer: "Simulated client answer: We prefer the grey pavers." };
+                } else if (r.status === "answered") {
+                    return { ...r, status: "closed" };
+                }
+            }
+            return r;
+        });
+
+        // @ts-ignore
         setProject({
             ...project,
-            rfis: (project.rfis || []).map(r => {
-                if (r.id === id) {
-                    if (r.status === "open") {
-                        return { ...r, status: "answered", answer: "Simulated client answer: We prefer the grey pavers." };
-                    } else if (r.status === "answered") {
-                        return { ...r, status: "closed" };
-                    }
-                }
-                return r;
-            })
+            rfis: updatedRFIs,
+            notifications: notif ? [...(project.notifications || []), notif] : project.notifications
+        });
+    };
+
+    const handleMarkNotificationRead = (id: string) => {
+        setProject({
+            ...project,
+            notifications: (project.notifications || []).map(n =>
+                n.id === id ? { ...n, read: true } : n
+            )
         });
     };
 
@@ -154,6 +188,10 @@ export default function ProjectDashboardPage() {
                         <Badge variant={project.status === 'active' ? 'default' : 'secondary'}>
                             {project.status}
                         </Badge>
+                        <NotificationsPopover
+                            notifications={project.notifications}
+                            onMarkAsRead={handleMarkNotificationRead}
+                        />
                     </div>
                     <p className="text-zinc-500 mt-1">{project.customerName} • {project.address}</p>
                 </div>

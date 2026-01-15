@@ -18,6 +18,16 @@ export interface Project {
     messages?: Message[];
     notes?: ProjectNote[];
     rfis?: RFI[];
+    notifications?: Notification[];
+}
+
+export interface Notification {
+    id: string;
+    title: string;
+    message: string;
+    type: "info" | "warning" | "success";
+    read: boolean;
+    timestamp: string;
 }
 
 export interface RFI {
@@ -118,6 +128,9 @@ export const MOCK_PROJECTS: Project[] = [
         ],
         rfis: [
             { id: "rfi-1", question: "Confirm paver color choice: Red or Grey?", status: "open", dueDate: "2025-12-08", createdAt: "2025-12-05" }
+        ],
+        notifications: [
+            { id: "notif-1", title: "New Message", message: "James sent you a message.", type: "info", read: false, timestamp: "2025-12-05T18:05:00Z" }
         ]
     },
     {
