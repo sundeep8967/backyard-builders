@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, DollarSign, MapPin, Activity } from "lucide-react";
+import { ProjectSchedule } from "@/components/admin/project-schedule";
 
 export default function ProjectDashboardPage() {
     const params = useParams();
@@ -23,7 +24,8 @@ export default function ProjectDashboardPage() {
         status: "planning",
         startDate: new Date().toISOString(),
         budget: 0,
-        completionPercentage: 0
+        completionPercentage: 0,
+        phases: []
     } as Project;
 
     return (
@@ -82,9 +84,15 @@ export default function ProjectDashboardPage() {
                 </Card>
             </div>
 
-            <div className="rounded-lg border border-dashed border-zinc-200 bg-zinc-50 p-12 text-center text-zinc-500">
-                <p>Project Schedule & Tasks Coming Soon (Story 5.2)</p>
-            </div>
+            {/* Project Schedule */}
+            {project.phases && project.phases.length > 0 ? (
+                <ProjectSchedule project={project} />
+            ) : (
+                <div className="rounded-lg border border-dashed border-zinc-200 bg-zinc-50 p-12 text-center text-zinc-500">
+                    <p>No schedule phases defined.</p>
+                    <Button variant="link" className="mt-2 text-zinc-900">Apply Template</Button>
+                </div>
+            )}
         </div>
     );
 }

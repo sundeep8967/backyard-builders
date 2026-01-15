@@ -20,8 +20,12 @@ describe("ProjectDashboardPage", () => {
         expect(screen.getByText("35%")).toBeInTheDocument();
     });
 
-    it("renders placeholder for schedule", () => {
+    it("renders schedule component", () => {
         render(<ProjectDashboardPage />);
-        expect(screen.getByText(/Project Schedule & Tasks Coming Soon/i)).toBeInTheDocument();
+        // MOCK Project 1 (id: "proj-1" which we verify is default in test but we mocked useParams)
+        // MOCK_PROJECTS[0] has phases in recent update.
+        // So we should expect "Construction Schedule" (the card title)
+        expect(screen.getByText("Construction Schedule")).toBeInTheDocument();
+        expect(screen.getByText("Prep & Demo")).toBeInTheDocument();
     });
 });

@@ -11,6 +11,15 @@ export interface Project {
     endDate?: string; // ISO Date
     budget: number;
     completionPercentage: number;
+    phases: ProjectPhase[];
+}
+
+export interface ProjectPhase {
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    status: "not-started" | "in-progress" | "completed";
 }
 
 export const MOCK_PROJECTS: Project[] = [
@@ -24,6 +33,12 @@ export const MOCK_PROJECTS: Project[] = [
         startDate: "2025-12-01T09:00:00Z",
         budget: 45000,
         completionPercentage: 35,
+        phases: [
+            { id: "ph-1", name: "Prep & Demo", startDate: "2025-12-01", endDate: "2025-12-05", status: "completed" },
+            { id: "ph-2", name: "Foundation / Grading", startDate: "2025-12-06", endDate: "2025-12-15", status: "in-progress" },
+            { id: "ph-3", name: "Structure / Hardscape", startDate: "2025-12-16", endDate: "2025-12-30", status: "not-started" },
+            { id: "ph-4", name: "Finishes & Cleanup", startDate: "2026-01-02", endDate: "2026-01-10", status: "not-started" },
+        ]
     },
     {
         id: "proj-2",
@@ -35,5 +50,9 @@ export const MOCK_PROJECTS: Project[] = [
         startDate: "2026-02-15T09:00:00Z",
         budget: 85000,
         completionPercentage: 0,
+        phases: [
+            { id: "ph-1", name: "Prep & Demo", startDate: "2026-02-15", endDate: "2026-02-20", status: "not-started" },
+            { id: "ph-2", name: "Foundation / Grading", startDate: "2026-02-21", endDate: "2026-03-05", status: "not-started" },
+        ]
     }
 ];

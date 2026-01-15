@@ -77,8 +77,8 @@ development_status:
 
   # Epic 5: Projects & Execution
   epic-5: in-progress
-  5-1-project-handoff-setup: review
-  5-2-construction-schedule: backlog
+  5-1-project-handoff-setup: done
+  5-2-construction-schedule: in-progress
   5-3-daily-logs: backlog
   5-4-change-orders: backlog
   5-5-invoicing-payments: backlog
