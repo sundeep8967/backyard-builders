@@ -12,6 +12,16 @@ export interface Project {
     budget: number;
     completionPercentage: number;
     phases: ProjectPhase[];
+    logs?: ProjectLog[];
+}
+
+export interface ProjectLog {
+    id: string;
+    date: string;
+    weather: string;
+    notes: string;
+    hoursWorked: number;
+    author: string;
 }
 
 export interface ProjectPhase {
@@ -38,6 +48,10 @@ export const MOCK_PROJECTS: Project[] = [
             { id: "ph-2", name: "Foundation / Grading", startDate: "2025-12-06", endDate: "2025-12-15", status: "in-progress" },
             { id: "ph-3", name: "Structure / Hardscape", startDate: "2025-12-16", endDate: "2025-12-30", status: "not-started" },
             { id: "ph-4", name: "Finishes & Cleanup", startDate: "2026-01-02", endDate: "2026-01-10", status: "not-started" },
+        ],
+        logs: [
+            { id: "log-1", date: "2025-12-01", weather: "Sunny, 55F", notes: "Started demo. Removed old patio pavers.", hoursWorked: 8, author: "Mike" },
+            { id: "log-2", date: "2025-12-02", weather: "Cloudy, 52F", notes: "Continued demo. Cleared shrubs.", hoursWorked: 6, author: "Mike" },
         ]
     },
     {

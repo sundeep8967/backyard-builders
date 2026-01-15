@@ -2,20 +2,23 @@
 
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { MOCK_PROJECTS, Project } from "@/lib/admin/projects";
+import { MOCK_PROJECTS, Project, ProjectLog } from "@/lib/admin/projects";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, DollarSign, MapPin, Activity } from "lucide-react";
 import { ProjectSchedule } from "@/components/admin/project-schedule";
+import { RecentLogs } from "@/components/admin/recent-logs";
+import { DailyLogDialog } from "@/components/admin/daily-log-dialog";
 
 export default function ProjectDashboardPage() {
     const params = useParams();
     const projectId = params.id as string;
+    const [logOpen, setLogOpen] = useState(false);
 
     // In a real app, fetch execution would go here.
     // For now, finding in mock or creating a dummy if not found (since we are "creating" it from leads)
-    const project = MOCK_PROJECTS.find(p => p.id === projectId) || {
+    const initialProject = MOCK_PROJECTS.find(p => p.id === projectId) || {
         id: projectId,
         leadId: "unknown",
         customerName: "New Project",
@@ -27,6 +30,20 @@ export default function ProjectDashboardPage() {
         completionPercentage: 0,
         phases: []
     } as Project;
+
+    const [project, setProject] = useState<Project>(initialProject);
+
+    const handleSaveLog = (newLogEntry: Omit<ProjectLog, "id">) => {
+        const newLog: ProjectLog = {
+            id: `log-${Date.now()}`,
+            ...newLogEntry
+        };
+
+        setProject({
+            ...project,
+            logs: [...(project.logs || []), newLog]
+        });
+    };
 
     return (
         <div className="space-y-6">
@@ -42,7 +59,7 @@ export default function ProjectDashboardPage() {
                 </div>
                 <div className="flex gap-2">
                     <Button variant="outline">Edit Details</Button>
-                    <Button>Daily Log</Button>
+                    <Button onClick={() => setLogOpen(true)}>Daily Log</Button>
                 </div>
             </div>
 
@@ -82,6 +99,7 @@ export default function ProjectDashboardPage() {
                         </div>
                     </CardContent>
                 </Card>
+                <RecentLogs logs={project.logs} />
             </div>
 
             {/* Project Schedule */}
@@ -93,6 +111,12 @@ export default function ProjectDashboardPage() {
                     <Button variant="link" className="mt-2 text-zinc-900">Apply Template</Button>
                 </div>
             )}
+
+            <DailyLogDialog
+                open={logOpen}
+                onOpenChange={setLogOpen}
+                onSave={handleSaveLog}
+            />
         </div>
     );
 }
