@@ -11,6 +11,14 @@ export interface Lead {
     createdAt: string;
     lastContact: string;
     scheduledDate?: string;
+    siteConditions?: SiteConditions;
+}
+
+export interface SiteConditions {
+    access: "good" | "limited" | "crane";
+    slope: "flat" | "gentle" | "steep";
+    soil?: string;
+    notes?: string;
 }
 
 export const MOCK_LEADS: Lead[] = [

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { MOCK_LEADS, Lead, LeadStatus } from "@/lib/admin/leads";
+import { MOCK_LEADS, Lead, LeadStatus, SiteConditions } from "@/lib/admin/leads";
+import { LeadDetailDialog } from "@/components/admin/lead-detail-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MoreHorizontal, Phone, Mail, Calendar, DollarSign } from "lucide-react";
@@ -53,6 +54,21 @@ export default function AdminDashboardPage() {
         setSelectedLeadId(null);
     };
 
+    // Lead Detail / Site Conditions
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+
+    const openDetail = (lead: Lead) => {
+        setSelectedLead(lead);
+        setDetailOpen(true);
+    };
+
+    const handleSaveConditions = (leadId: string, conditions: SiteConditions) => {
+        setLeads(leads.map(l =>
+            l.id === leadId ? { ...l, siteConditions: conditions } : l
+        ));
+    }
+
     return (
         <div className="h-full">
             <div className="mb-8 flex items-center justify-between">
@@ -92,7 +108,12 @@ export default function AdminDashboardPage() {
                                             </Button>
                                         </div>
                                         <CardTitle className="text-sm font-bold text-zinc-900 mt-2">
-                                            {lead.customerName}
+                                            <button
+                                                onClick={() => openDetail(lead)}
+                                                className="hover:underline hover:text-blue-600 text-left"
+                                            >
+                                                {lead.customerName}
+                                            </button>
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent className="p-4 pt-0">
@@ -184,6 +205,13 @@ export default function AdminDashboardPage() {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
+            <LeadDetailDialog
+                lead={selectedLead}
+                open={detailOpen}
+                onOpenChange={setDetailOpen}
+                onSave={handleSaveConditions}
+            />
         </div>
     );
 }
