@@ -16,7 +16,9 @@ import { CreateInvoiceDialog } from "@/components/admin/create-invoice-dialog";
 import { InvoiceList } from "@/components/admin/invoice-list";
 import { ProjectMessages } from "@/components/admin/project-messages";
 import { ProjectNotes } from "@/components/admin/project-notes";
-import { ChangeOrder, Invoice, Message, ProjectNote } from "@/lib/admin/projects";
+import { CreateRFIDialog } from "@/components/admin/create-rfi-dialog";
+import { RFIList } from "@/components/admin/rfi-list";
+import { ChangeOrder, Invoice, Message, ProjectNote, RFI } from "@/lib/admin/projects";
 
 export default function ProjectDashboardPage() {
     const params = useParams();
@@ -24,6 +26,7 @@ export default function ProjectDashboardPage() {
     const [logOpen, setLogOpen] = useState(false);
     const [changeOrderOpen, setChangeOrderOpen] = useState(false);
     const [invoiceOpen, setInvoiceOpen] = useState(false);
+    const [rfiOpen, setRfiOpen] = useState(false);
 
     // In a real app, fetch execution would go here.
     // For now, finding in mock or creating a dummy if not found (since we are "creating" it from leads)
@@ -112,6 +115,36 @@ export default function ProjectDashboardPage() {
         });
     };
 
+    const handleSaveRFI = (newRfi: Omit<RFI, "id" | "status" | "createdAt">) => {
+        const rfi: RFI = {
+            id: `rfi-${Date.now()}`,
+            ...newRfi,
+            status: "open",
+            createdAt: new Date().toISOString()
+        };
+
+        setProject({
+            ...project,
+            rfis: [...(project.rfis || []), rfi]
+        });
+    };
+
+    const handleSimulateAnswerRFI = (id: string) => {
+        setProject({
+            ...project,
+            rfis: (project.rfis || []).map(r => {
+                if (r.id === id) {
+                    if (r.status === "open") {
+                        return { ...r, status: "answered", answer: "Simulated client answer: We prefer the grey pavers." };
+                    } else if (r.status === "answered") {
+                        return { ...r, status: "closed" };
+                    }
+                }
+                return r;
+            })
+        });
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -127,6 +160,7 @@ export default function ProjectDashboardPage() {
                 <div className="flex gap-2">
                     <Button variant="outline">Edit Details</Button>
                     <Button variant="outline" onClick={() => setInvoiceOpen(true)}>Invoicing</Button>
+                    <Button variant="outline" onClick={() => setRfiOpen(true)}>+ RFI</Button>
                     <Button variant="secondary" onClick={() => setChangeOrderOpen(true)}>+ Change Order</Button>
                     <Button onClick={() => setLogOpen(true)}>Daily Log</Button>
                 </div>
@@ -197,6 +231,14 @@ export default function ProjectDashboardPage() {
                         </div>
                         <InvoiceList invoices={project.invoices} />
                     </div>
+
+                    {/* RFIs */}
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-zinc-900">RFIs</h2>
+                        </div>
+                        <RFIList rfis={project.rfis} onSimulateAnswer={handleSimulateAnswerRFI} />
+                    </div>
                 </div>
 
                 <div className="space-y-6 col-span-1">
@@ -222,6 +264,12 @@ export default function ProjectDashboardPage() {
                 open={invoiceOpen}
                 onOpenChange={setInvoiceOpen}
                 onSave={handleSaveInvoice}
+            />
+
+            <CreateRFIDialog
+                open={rfiOpen}
+                onOpenChange={setRfiOpen}
+                onSave={handleSaveRFI}
             />
         </div>
     );

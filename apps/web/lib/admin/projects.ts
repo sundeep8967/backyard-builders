@@ -17,6 +17,16 @@ export interface Project {
     invoices?: Invoice[];
     messages?: Message[];
     notes?: ProjectNote[];
+    rfis?: RFI[];
+}
+
+export interface RFI {
+    id: string;
+    question: string;
+    answer?: string;
+    status: "open" | "answered" | "closed";
+    dueDate?: string;
+    createdAt: string;
 }
 
 export interface ProjectNote {
@@ -105,6 +115,9 @@ export const MOCK_PROJECTS: Project[] = [
         notes: [
             { id: "note-1", content: "Client mentioned they might travel during the holidays.", author: "Admin", timestamp: "2025-11-15T10:00:00Z", isInternal: true },
             { id: "note-2", content: "Gate code is 1234.", author: "Admin", timestamp: "2025-11-20T09:00:00Z", isInternal: true }
+        ],
+        rfis: [
+            { id: "rfi-1", question: "Confirm paver color choice: Red or Grey?", status: "open", dueDate: "2025-12-08", createdAt: "2025-12-05" }
         ]
     },
     {
