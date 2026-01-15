@@ -59,12 +59,12 @@ development_status:
   epic-2-retrospective: optional
 
   # Epic 3: Estimates & Design Center
-  epic-3: in-progress
+  epic-3: done
   3-1-showcase-gallery: review
   3-2-estimate-wizard-service-selection: review
   3-3-interactive-design-center-canvas: review
   3-4-material-selection-pricing-engine: review
-  3-5-proposal-generation: backlog
+  3-5-proposal-generation: review
   epic-3-retrospective: optional
 
   # Epic 4: Advisor Workflow & Proposals

@@ -20,6 +20,30 @@ export default function EstimatesPage() {
                 </Button>
             </div>
 
+            {/* Demo Proposal Card */}
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="group relative rounded-xl border border-zinc-800 bg-zinc-900 p-6 transition-all hover:border-zinc-700">
+                    <div className="flex items-start justify-between">
+                        <div>
+                            <h3 className="font-semibold text-white">Patio & Fire Pit</h3>
+                            <p className="mt-1 text-sm text-zinc-400">Created just now</p>
+                        </div>
+                        <span className="rounded-full bg-yellow-500/10 px-2 py-1 text-xs font-medium text-yellow-500">
+                            Draft
+                        </span>
+                    </div>
+                    <div className="mt-4 flex items-end justify-between">
+                        <div>
+                            <p className="text-sm text-zinc-500">Est. Cost</p>
+                            <p className="text-xl font-bold text-white">$14,040</p>
+                        </div>
+                        <Button asChild variant="outline" size="sm" className="border-zinc-700 text-white hover:bg-zinc-800">
+                            <Link href="/dashboard/proposals/demo">View Proposal</Link>
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
             {/* Empty State */}
             <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-700 py-16">
                 <div className="rounded-full bg-zinc-800 p-4">
