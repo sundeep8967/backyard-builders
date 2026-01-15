@@ -1,0 +1,90 @@
+"use client";
+
+import { useParams } from "next/navigation";
+import { useState } from "react";
+import { MOCK_PROJECTS, Project } from "@/lib/admin/projects";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar, DollarSign, MapPin, Activity } from "lucide-react";
+
+export default function ProjectDashboardPage() {
+    const params = useParams();
+    const projectId = params.id as string;
+
+    // In a real app, fetch execution would go here.
+    // For now, finding in mock or creating a dummy if not found (since we are "creating" it from leads)
+    const project = MOCK_PROJECTS.find(p => p.id === projectId) || {
+        id: projectId,
+        leadId: "unknown",
+        customerName: "New Project",
+        address: "123 New St (Mock)",
+        projectType: "Custom Project",
+        status: "planning",
+        startDate: new Date().toISOString(),
+        budget: 0,
+        completionPercentage: 0
+    } as Project;
+
+    return (
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-2xl font-bold text-zinc-900">{project.projectType}</h1>
+                        <Badge variant={project.status === 'active' ? 'default' : 'secondary'}>
+                            {project.status}
+                        </Badge>
+                    </div>
+                    <p className="text-zinc-500 mt-1">{project.customerName} • {project.address}</p>
+                </div>
+                <div className="flex gap-2">
+                    <Button variant="outline">Edit Details</Button>
+                    <Button>Daily Log</Button>
+                </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-4">
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Budget</CardTitle>
+                        <DollarSign className="h-4 w-4 text-zinc-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">${project.budget.toLocaleString()}</div>
+                        <p className="text-xs text-zinc-500">Total Approved</p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Start Date</CardTitle>
+                        <Calendar className="h-4 w-4 text-zinc-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{new Date(project.startDate).toLocaleDateString()}</div>
+                        <p className="text-xs text-zinc-500">Scheduled Start</p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Progress</CardTitle>
+                        <Activity className="h-4 w-4 text-zinc-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{project.completionPercentage}%</div>
+                        <div className="mt-2 h-2 w-full rounded-full bg-zinc-100">
+                            <div
+                                className="h-full rounded-full bg-zinc-900 transition-all"
+                                style={{ width: `${project.completionPercentage}%` }}
+                            />
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+
+            <div className="rounded-lg border border-dashed border-zinc-200 bg-zinc-50 p-12 text-center text-zinc-500">
+                <p>Project Schedule & Tasks Coming Soon (Story 5.2)</p>
+            </div>
+        </div>
+    );
+}

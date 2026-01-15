@@ -137,6 +137,13 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onSave }: LeadDetai
                             Generate Contract
                         </Button>
                     )}
+                    {lead.status === 'won' && (
+                        <Button asChild className="bg-green-600 hover:bg-green-700">
+                            <Link href={`/admin/projects/new-from-lead-${lead.id}`}>
+                                Create Project
+                            </Link>
+                        </Button>
+                    )}
                     {showConditions && (
                         <Button onClick={handleSave}>Save Conditions</Button>
                     )}

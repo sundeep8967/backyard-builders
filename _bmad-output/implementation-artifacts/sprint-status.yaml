@@ -76,8 +76,8 @@ development_status:
   epic-4-retrospective: optional
 
   # Epic 5: Projects & Execution
-  epic-5: backlog
-  5-1-project-handoff-setup: backlog
+  epic-5: in-progress
+  5-1-project-handoff-setup: review
   5-2-construction-schedule: backlog
   5-3-daily-logs: backlog
   5-4-change-orders: backlog
