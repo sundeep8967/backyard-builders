@@ -19,9 +19,10 @@ import { ProjectNotes } from "@/components/admin/project-notes";
 import { NotificationsPopover } from "@/components/admin/notifications-popover";
 import { CreateRFIDialog } from "@/components/admin/create-rfi-dialog";
 import { RFIList } from "@/components/admin/rfi-list";
+import { SubmitClaimDialog } from "@/components/admin/submit-claim-dialog";
 import { RegisterWarrantyDialog } from "@/components/admin/register-warranty-dialog";
 import { WarrantyList } from "@/components/admin/warranty-list";
-import { ChangeOrder, Invoice, Message, Notification, ProjectNote, RFI, Warranty } from "@/lib/admin/projects";
+import { ChangeOrder, Invoice, Message, Notification, ProjectNote, RFI, Warranty, WarrantyClaim } from "@/lib/admin/projects";
 
 export default function ProjectDashboardPage() {
     const params = useParams();
@@ -31,6 +32,8 @@ export default function ProjectDashboardPage() {
     const [invoiceOpen, setInvoiceOpen] = useState(false);
     const [rfiOpen, setRfiOpen] = useState(false);
     const [warrantyOpen, setWarrantyOpen] = useState(false);
+    const [claimOpen, setClaimOpen] = useState(false);
+    const [selectedWarrantyId, setSelectedWarrantyId] = useState<string>("");
 
     // In a real app, fetch execution would go here.
     // For now, finding in mock or creating a dummy if not found (since we are "creating" it from leads)
@@ -152,6 +155,26 @@ export default function ProjectDashboardPage() {
         setProject({
             ...project,
             warranties: [...(project.warranties || []), warranty]
+        });
+    };
+
+    const handleFileClaim = (warrantyId: string) => {
+        setSelectedWarrantyId(warrantyId);
+        setClaimOpen(true);
+    };
+
+    const handleSaveClaim = (newClaim: Omit<WarrantyClaim, "id" | "status" | "createdAt" | "warrantyId">) => {
+        const claim: WarrantyClaim = {
+            id: `claim-${Date.now()}`,
+            warrantyId: selectedWarrantyId,
+            ...newClaim,
+            status: "Submitted",
+            createdAt: new Date().toISOString()
+        };
+
+        setProject({
+            ...project,
+            claims: [...(project.claims || []), claim]
         });
     };
 
@@ -299,7 +322,11 @@ export default function ProjectDashboardPage() {
                             <h2 className="text-xl font-bold text-zinc-900">Warranty</h2>
                             <Button variant="outline" size="sm" onClick={() => setWarrantyOpen(true)}>+ Register</Button>
                         </div>
-                        <WarrantyList warranties={project.warranties} />
+                        <WarrantyList
+                            warranties={project.warranties}
+                            claims={project.claims}
+                            onFileClaim={handleFileClaim}
+                        />
                     </div>
                 </div>
 
@@ -338,6 +365,13 @@ export default function ProjectDashboardPage() {
                 open={warrantyOpen}
                 onOpenChange={setWarrantyOpen}
                 onSave={handleSaveWarranty}
+            />
+
+            <SubmitClaimDialog
+                open={claimOpen}
+                onOpenChange={setClaimOpen}
+                warrantyId={selectedWarrantyId}
+                onSave={handleSaveClaim}
             />
         </div>
     );

@@ -95,6 +95,6 @@ development_status:
   # Epic 7: Warranty & Post-Completion
   epic-7: in-progress
   7-1-warranty-registration: done
-  7-2-warranty-claim-submission: backlog
+  7-2-warranty-claim-submission: done
   7-3-claim-management: backlog
   epic-7-retrospective: optional

@@ -20,6 +20,16 @@ export interface Project {
     rfis?: RFI[];
     notifications?: Notification[];
     warranties?: Warranty[];
+    claims?: WarrantyClaim[];
+}
+
+export interface WarrantyClaim {
+    id: string;
+    warrantyId: string;
+    title: string;
+    description: string;
+    status: "Submitted" | "In Review" | "Approved" | "Rejected" | "Completed";
+    createdAt: string;
 }
 
 export interface Warranty {
@@ -142,7 +152,8 @@ export const MOCK_PROJECTS: Project[] = [
         notifications: [
             { id: "notif-1", title: "New Message", message: "James sent you a message.", type: "info", read: false, timestamp: "2025-12-05T18:05:00Z" }
         ],
-        warranties: []
+        warranties: [],
+        claims: []
     },
     {
         id: "proj-2",
