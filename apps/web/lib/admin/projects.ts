@@ -13,6 +13,16 @@ export interface Project {
     completionPercentage: number;
     phases: ProjectPhase[];
     logs?: ProjectLog[];
+    changeOrders?: ChangeOrder[];
+}
+
+export interface ChangeOrder {
+    id: string;
+    title: string;
+    description: string;
+    cost: number;
+    status: "draft" | "pending" | "approved" | "rejected";
+    createdAt: string;
 }
 
 export interface ProjectLog {
@@ -52,6 +62,9 @@ export const MOCK_PROJECTS: Project[] = [
         logs: [
             { id: "log-1", date: "2025-12-01", weather: "Sunny, 55F", notes: "Started demo. Removed old patio pavers.", hoursWorked: 8, author: "Mike" },
             { id: "log-2", date: "2025-12-02", weather: "Cloudy, 52F", notes: "Continued demo. Cleared shrubs.", hoursWorked: 6, author: "Mike" },
+        ],
+        changeOrders: [
+            { id: "co-1", title: "Extra Pavers", description: "Customer requested 50sqft additional patio.", cost: 1200, status: "approved", createdAt: "2025-12-10" }
         ]
     },
     {

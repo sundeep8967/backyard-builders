@@ -10,11 +10,15 @@ import { Calendar, DollarSign, MapPin, Activity } from "lucide-react";
 import { ProjectSchedule } from "@/components/admin/project-schedule";
 import { RecentLogs } from "@/components/admin/recent-logs";
 import { DailyLogDialog } from "@/components/admin/daily-log-dialog";
+import { CreateChangeOrderDialog } from "@/components/admin/create-change-order-dialog";
+import { ChangeOrderList } from "@/components/admin/change-order-list";
+import { ChangeOrder } from "@/lib/admin/projects";
 
 export default function ProjectDashboardPage() {
     const params = useParams();
     const projectId = params.id as string;
     const [logOpen, setLogOpen] = useState(false);
+    const [changeOrderOpen, setChangeOrderOpen] = useState(false);
 
     // In a real app, fetch execution would go here.
     // For now, finding in mock or creating a dummy if not found (since we are "creating" it from leads)
@@ -45,6 +49,20 @@ export default function ProjectDashboardPage() {
         });
     };
 
+    const handleSaveChangeOrder = (newCO: Omit<ChangeOrder, "id" | "date" | "status" | "createdAt">) => {
+        const co: ChangeOrder = {
+            id: `co-${Date.now()}`,
+            ...newCO,
+            status: "pending",
+            createdAt: new Date().toISOString()
+        };
+
+        setProject({
+            ...project,
+            changeOrders: [...(project.changeOrders || []), co]
+        });
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -59,6 +77,7 @@ export default function ProjectDashboardPage() {
                 </div>
                 <div className="flex gap-2">
                     <Button variant="outline">Edit Details</Button>
+                    <Button variant="secondary" onClick={() => setChangeOrderOpen(true)}>+ Change Order</Button>
                     <Button onClick={() => setLogOpen(true)}>Daily Log</Button>
                 </div>
             </div>
@@ -112,10 +131,24 @@ export default function ProjectDashboardPage() {
                 </div>
             )}
 
+            {/* Change Orders */}
+            <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-bold text-zinc-900">Change Orders</h2>
+                </div>
+                <ChangeOrderList changeOrders={project.changeOrders} />
+            </div>
+
             <DailyLogDialog
                 open={logOpen}
                 onOpenChange={setLogOpen}
                 onSave={handleSaveLog}
+            />
+
+            <CreateChangeOrderDialog
+                open={changeOrderOpen}
+                onOpenChange={setChangeOrderOpen}
+                onSave={handleSaveChangeOrder}
             />
         </div>
     );
