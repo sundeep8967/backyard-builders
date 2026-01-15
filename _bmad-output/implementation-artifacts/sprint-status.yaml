@@ -70,7 +70,7 @@ development_status:
   # Epic 4: Advisor Workflow & Proposals
   epic-4: in-progress
   4-1-advisor-dashboard-lead-queue: review
-  4-2-site-visit-scheduling: backlog
+  4-2-site-visit-scheduling: in-progress
   4-3-site-condition-verification: backlog
   4-4-contract-generation: backlog
   epic-4-retrospective: optional

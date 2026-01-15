@@ -6,6 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MoreHorizontal, Phone, Mail, Calendar, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 const COLUMNS: { id: LeadStatus; label: string; color: string }[] = [
     { id: "new", label: "New Leads", color: "bg-blue-500/10 text-blue-700" },
@@ -25,6 +30,28 @@ export default function AdminDashboardPage() {
     const moveLead = (leadId: string, newStatus: LeadStatus) => {
         setLeads(leads.map(l => l.id === leadId ? { ...l, status: newStatus } : l));
     }
+
+    // Scheduling Logic
+    const [scheduleOpen, setScheduleOpen] = useState(false);
+    const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
+    const [date, setDate] = useState<Date | undefined>(new Date());
+
+    const openSchedule = (leadId: string) => {
+        setSelectedLeadId(leadId);
+        setScheduleOpen(true);
+    };
+
+    const confirmSchedule = () => {
+        if (!selectedLeadId || !date) return;
+
+        setLeads(leads.map(l =>
+            l.id === selectedLeadId
+                ? { ...l, status: "scheduled", scheduledDate: date.toISOString(), lastContact: `Scheduled for ${format(date, "MM/dd")}` }
+                : l
+        ));
+        setScheduleOpen(false);
+        setSelectedLeadId(null);
+    };
 
     return (
         <div className="h-full">
@@ -78,6 +105,12 @@ export default function AdminDashboardPage() {
                                             {new Date(lead.createdAt).toLocaleDateString()}
                                         </p>
 
+                                        {lead.scheduledDate && (
+                                            <div className="mt-2 rounded bg-purple-100 px-2 py-1 text-xs font-medium text-purple-700">
+                                                Visit: {format(new Date(lead.scheduledDate), "MMM d, h:mm a")}
+                                            </div>
+                                        )}
+
                                         <div className="mt-4 flex gap-2 border-t pt-3">
                                             <Button size="icon" variant="ghost" className="h-6 w-6 text-zinc-400 hover:text-green-600">
                                                 <Phone className="h-3 w-3" />
@@ -97,6 +130,18 @@ export default function AdminDashboardPage() {
                                                     Contacted -&gt;
                                                 </Button>
                                             )}
+
+                                            {/* Schedule Action */}
+                                            {col.id === 'contacted' && (
+                                                <Button
+                                                    onClick={() => openSchedule(lead.id)}
+                                                    size="sm"
+                                                    variant="outline"
+                                                    className="ml-auto h-6 text-xs border-purple-200 text-purple-700 hover:bg-purple-50"
+                                                >
+                                                    Schedule Visit
+                                                </Button>
+                                            )}
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -111,6 +156,34 @@ export default function AdminDashboardPage() {
                     </div>
                 ))}
             </div>
+
+            {/* Schedule Dialog */}
+            <Dialog open={scheduleOpen} onOpenChange={setScheduleOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Schedule Site Visit</DialogTitle>
+                        <DialogDescription>
+                            Select a date and time for the site visit with the customer.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="py-4">
+                        <div className="flex justify-center">
+                            <CalendarComponent
+                                mode="single"
+                                selected={date}
+                                onSelect={setDate}
+                                className="rounded-md border"
+                            />
+                        </div>
+                    </div>
+
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setScheduleOpen(false)}>Cancel</Button>
+                        <Button onClick={confirmSchedule} disabled={!date}>Confirm Schedule</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

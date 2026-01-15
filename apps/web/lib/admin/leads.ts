@@ -10,6 +10,7 @@ export interface Lead {
     status: LeadStatus;
     createdAt: string;
     lastContact: string;
+    scheduledDate?: string;
 }
 
 export const MOCK_LEADS: Lead[] = [
@@ -45,6 +46,7 @@ export const MOCK_LEADS: Lead[] = [
         status: "scheduled",
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(),
         lastContact: "Site visit confirmed for 1/20",
+        scheduledDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3).toISOString(), // 3 days from now
     },
     {
         id: "lead-4",
