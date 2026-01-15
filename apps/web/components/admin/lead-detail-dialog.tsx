@@ -1,4 +1,5 @@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -122,8 +123,20 @@ export function LeadDetailDialog({ lead, open, onOpenChange, onSave }: LeadDetai
                     )}
                 </div>
 
-                <DialogFooter>
+                <DialogFooter className="gap-2 sm:gap-0">
                     <Button variant="outline" onClick={() => onOpenChange(false)}>Close</Button>
+                    {lead.status === 'proposal' && (
+                        <Button asChild variant="secondary">
+                            <Link href="/dashboard/proposals/demo" target="_blank">
+                                View Proposal
+                            </Link>
+                        </Button>
+                    )}
+                    {lead.status === 'scheduled' && (
+                        <Button onClick={() => onSave(lead.id, { ...lead.siteConditions!, notes: (lead.siteConditions?.notes || "") + " [Proposal Generated]" })}>
+                            Generate Contract
+                        </Button>
+                    )}
                     {showConditions && (
                         <Button onClick={handleSave}>Save Conditions</Button>
                     )}

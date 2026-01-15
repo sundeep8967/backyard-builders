@@ -68,11 +68,11 @@ development_status:
   epic-3-retrospective: optional
 
   # Epic 4: Advisor Workflow & Proposals
-  epic-4: in-progress
+  epic-4: done
   4-1-advisor-dashboard-lead-queue: review
   4-2-site-visit-scheduling: done
   4-3-site-condition-verification: review
-  4-4-contract-generation: backlog
+  4-4-contract-generation: review
   epic-4-retrospective: optional
 
   # Epic 5: Projects & Execution
