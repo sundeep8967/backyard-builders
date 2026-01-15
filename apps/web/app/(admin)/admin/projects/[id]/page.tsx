@@ -14,7 +14,8 @@ import { CreateChangeOrderDialog } from "@/components/admin/create-change-order-
 import { ChangeOrderList } from "@/components/admin/change-order-list";
 import { CreateInvoiceDialog } from "@/components/admin/create-invoice-dialog";
 import { InvoiceList } from "@/components/admin/invoice-list";
-import { ChangeOrder, Invoice } from "@/lib/admin/projects";
+import { ChangeOrder, Invoice, Message } from "@/lib/admin/projects";
+import { ProjectMessages } from "@/components/admin/project-messages";
 
 export default function ProjectDashboardPage() {
     const params = useParams();
@@ -80,6 +81,21 @@ export default function ProjectDashboardPage() {
         });
     };
 
+    const handleSendMessage = (content: string) => {
+        const newMessage: Message = {
+            id: `msg-${Date.now()}`,
+            content,
+            sender: "You",
+            isAdmin: true,
+            timestamp: new Date().toISOString()
+        };
+
+        setProject({
+            ...project,
+            messages: [...(project.messages || []), newMessage]
+        });
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -100,69 +116,77 @@ export default function ProjectDashboardPage() {
                 </div>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-4">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Budget</CardTitle>
-                        <DollarSign className="h-4 w-4 text-zinc-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">${project.budget.toLocaleString()}</div>
-                        <p className="text-xs text-zinc-500">Total Approved</p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Start Date</CardTitle>
-                        <Calendar className="h-4 w-4 text-zinc-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{new Date(project.startDate).toLocaleDateString()}</div>
-                        <p className="text-xs text-zinc-500">Scheduled Start</p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Progress</CardTitle>
-                        <Activity className="h-4 w-4 text-zinc-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{project.completionPercentage}%</div>
-                        <div className="mt-2 h-2 w-full rounded-full bg-zinc-100">
-                            <div
-                                className="h-full rounded-full bg-zinc-900 transition-all"
-                                style={{ width: `${project.completionPercentage}%` }}
-                            />
+            <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
+                <div className="space-y-6 col-span-1 md:col-span-2 lg:col-span-3">
+                    <div className="grid gap-6 md:grid-cols-3">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-sm font-medium">Budget</CardTitle>
+                                <DollarSign className="h-4 w-4 text-zinc-500" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">${project.budget.toLocaleString()}</div>
+                                <p className="text-xs text-zinc-500">Total Approved</p>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-sm font-medium">Start Date</CardTitle>
+                                <Calendar className="h-4 w-4 text-zinc-500" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{new Date(project.startDate).toLocaleDateString()}</div>
+                                <p className="text-xs text-zinc-500">Scheduled Start</p>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-sm font-medium">Progress</CardTitle>
+                                <Activity className="h-4 w-4 text-zinc-500" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{project.completionPercentage}%</div>
+                                <div className="mt-2 h-2 w-full rounded-full bg-zinc-100">
+                                    <div
+                                        className="h-full rounded-full bg-zinc-900 transition-all"
+                                        style={{ width: `${project.completionPercentage}%` }}
+                                    />
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    {/* Project Schedule */}
+                    {project.phases && project.phases.length > 0 ? (
+                        <ProjectSchedule project={project} />
+                    ) : (
+                        <div className="rounded-lg border border-dashed border-zinc-200 bg-zinc-50 p-12 text-center text-zinc-500">
+                            <p>No schedule phases defined.</p>
+                            <Button variant="link" className="mt-2 text-zinc-900">Apply Template</Button>
                         </div>
-                    </CardContent>
-                </Card>
-                <RecentLogs logs={project.logs} />
-            </div>
+                    )}
 
-            {/* Project Schedule */}
-            {project.phases && project.phases.length > 0 ? (
-                <ProjectSchedule project={project} />
-            ) : (
-                <div className="rounded-lg border border-dashed border-zinc-200 bg-zinc-50 p-12 text-center text-zinc-500">
-                    <p>No schedule phases defined.</p>
-                    <Button variant="link" className="mt-2 text-zinc-900">Apply Template</Button>
-                </div>
-            )}
+                    {/* Change Orders */}
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-zinc-900">Change Orders</h2>
+                        </div>
+                        <ChangeOrderList changeOrders={project.changeOrders} />
+                    </div>
 
-            {/* Change Orders */}
-            <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-zinc-900">Change Orders</h2>
+                    {/* Invoicing */}
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-zinc-900">Invoices</h2>
+                        </div>
+                        <InvoiceList invoices={project.invoices} />
+                    </div>
                 </div>
-                <ChangeOrderList changeOrders={project.changeOrders} />
-            </div>
 
-            {/* Invoicing */}
-            <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-zinc-900">Invoices</h2>
+                <div className="space-y-6 col-span-1">
+                    <RecentLogs logs={project.logs} />
+                    <ProjectMessages messages={project.messages} onSendMessage={handleSendMessage} />
                 </div>
-                <InvoiceList invoices={project.invoices} />
             </div>
 
             <DailyLogDialog

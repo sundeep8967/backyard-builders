@@ -15,6 +15,15 @@ export interface Project {
     logs?: ProjectLog[];
     changeOrders?: ChangeOrder[];
     invoices?: Invoice[];
+    messages?: Message[];
+}
+
+export interface Message {
+    id: string;
+    content: string;
+    sender: string;
+    isAdmin: boolean; // true if sent by internal team, false if by customer
+    timestamp: string;
 }
 
 export interface Invoice {
@@ -79,6 +88,10 @@ export const MOCK_PROJECTS: Project[] = [
         invoices: [
             { id: "inv-1", title: "Deposit / Mobilization", amount: 15000, status: "paid", dueDate: "2025-11-30", createdAt: "2025-11-20" },
             { id: "inv-2", title: "Foundation Milestone", amount: 10000, status: "sent", dueDate: "2025-12-15", createdAt: "2025-12-10" }
+        ],
+        messages: [
+            { id: "msg-1", content: "Hi! When will the crew start tomorrow?", sender: "James (Client)", isAdmin: false, timestamp: "2025-12-05T18:00:00Z" },
+            { id: "msg-2", content: "They will be there at 8 AM sharp.", sender: "Admin", isAdmin: true, timestamp: "2025-12-05T18:15:00Z" }
         ]
     },
     {

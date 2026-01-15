@@ -76,7 +76,7 @@ development_status:
   epic-4-retrospective: optional
 
   # Epic 5: Projects & Execution
-  epic-5: in-progress
+  epic-5: done
   5-1-project-handoff-setup: done
   5-2-construction-schedule: done
   5-3-daily-logs: done
@@ -85,8 +85,8 @@ development_status:
   epic-5-retrospective: optional
 
   # Epic 6: Communication & Reporting
-  epic-6: backlog
-  6-1-project-messaging-center: backlog
+  epic-6: in-progress
+  6-1-project-messaging-center: done
   6-2-internal-vs-external-notes: backlog
   6-3-rfi-workflow: backlog
   6-4-customer-notifications: backlog
