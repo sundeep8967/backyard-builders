@@ -27,5 +27,6 @@ describe("ProjectDashboardPage", () => {
         // So we should expect "Construction Schedule" (the card title)
         expect(screen.getByText("Construction Schedule")).toBeInTheDocument();
         expect(screen.getByText("Prep & Demo")).toBeInTheDocument();
+        expect(screen.getAllByText("Edit").length).toBeGreaterThan(0);
     });
 });
