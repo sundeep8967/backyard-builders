@@ -198,7 +198,7 @@ export default function ProjectDashboardPage() {
     const handleSimulateAnswerRFI = (id: string) => {
         let notif: Notification | undefined;
 
-        const updatedRFIs = (project.rfis || []).map(r => {
+        const updatedRFIs: RFI[] = (project.rfis || []).map(r => {
             if (r.id === id) {
                 if (r.status === "open") {
                     notif = {
@@ -209,15 +209,14 @@ export default function ProjectDashboardPage() {
                         read: false,
                         timestamp: new Date().toISOString()
                     };
-                    return { ...r, status: "answered", answer: "Simulated client answer: We prefer the grey pavers." };
+                    return { ...r, status: "answered" as const, answer: "Simulated client answer: We prefer the grey pavers." };
                 } else if (r.status === "answered") {
-                    return { ...r, status: "closed" };
+                    return { ...r, status: "closed" as const };
                 }
             }
             return r;
         });
 
-        // @ts-ignore
         setProject({
             ...project,
             rfis: updatedRFIs,
