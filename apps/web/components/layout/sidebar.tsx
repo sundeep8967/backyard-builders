@@ -57,12 +57,12 @@ export function Sidebar({ className }: SidebarProps) {
             {/* Logo */}
             <div className="flex h-16 items-center border-b border-zinc-200 px-4">
                 {!collapsed && (
-                    <span className="text-lg font-semibold text-zinc-900">
-                        Backyard Builders
+                    <span className="text-lg font-bold tracking-tight text-zinc-900">
+                        Dream Home Constructors
                     </span>
                 )}
                 {collapsed && (
-                    <span className="text-lg font-semibold text-zinc-900">BB</span>
+                    <span className="text-lg font-bold text-zinc-900">DHC</span>
                 )}
             </div>
 

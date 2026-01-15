@@ -27,9 +27,9 @@ export default function SignInPage() {
             <div className="w-full max-w-md space-y-8">
                 {/* Logo */}
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold text-zinc-900">Backyard Builders</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Dream Home Constructors</h1>
                     <p className="mt-2 text-zinc-600">
-                        Premium outdoor living spaces
+                        Master-crafted custom homes
                     </p>
                 </div>
 

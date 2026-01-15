@@ -8,8 +8,8 @@ export default function GetStartedPage() {
         <main className="flex min-h-screen flex-col bg-white">
             {/* Header */}
             <header className="flex items-center justify-between px-6 py-4 lg:px-12 border-b border-zinc-100">
-                <Link href="/" className="text-xl font-bold text-zinc-900">
-                    Backyard Builders
+                <Link href="/" className="text-xl font-bold tracking-tight text-zinc-900">
+                    Dream Home Constructors
                 </Link>
                 <Link
                     href="/sign-in"

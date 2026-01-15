@@ -48,8 +48,9 @@ export default function AdminLoginPage() {
                     <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white border border-zinc-200 shadow-sm">
                         <ShieldAlert className="h-6 w-6 text-red-600" />
                     </div>
-                    <h1 className="text-2xl font-bold text-zinc-900">Admin Portal</h1>
-                    <p className="mt-2 text-zinc-600">
+                    <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Dream Home Constructors</h1>
+                    <p className="mt-1 text-sm font-medium text-zinc-500 uppercase tracking-wider">Admin Portal</p>
+                    <p className="mt-4 text-xs text-zinc-400">
                         Restricted access for authorized personnel only.
                     </p>
                 </div>

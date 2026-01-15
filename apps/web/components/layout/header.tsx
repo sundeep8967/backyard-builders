@@ -41,7 +41,7 @@ export function Header({ className }: HeaderProps) {
                         <Sidebar className="border-0" />
                     </SheetContent>
                 </Sheet>
-                <span className="text-lg font-semibold text-zinc-900">BB</span>
+                <span className="text-lg font-bold text-zinc-900">DHC</span>
             </div>
 
             {/* Demo Mode indicator */}

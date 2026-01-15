@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Backyard Builders",
-  description: "Premium outdoor living spaces",
+  title: "Dream Home Constructors",
+  description: "Master-crafted custom homes and architectural transformations.",
 };
 
 export default function RootLayout({
