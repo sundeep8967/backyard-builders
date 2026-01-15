@@ -14,6 +14,16 @@ export interface Project {
     phases: ProjectPhase[];
     logs?: ProjectLog[];
     changeOrders?: ChangeOrder[];
+    invoices?: Invoice[];
+}
+
+export interface Invoice {
+    id: string;
+    title: string;
+    amount: number;
+    status: "draft" | "sent" | "paid" | "overdue";
+    dueDate: string;
+    createdAt: string;
 }
 
 export interface ChangeOrder {
@@ -65,6 +75,10 @@ export const MOCK_PROJECTS: Project[] = [
         ],
         changeOrders: [
             { id: "co-1", title: "Extra Pavers", description: "Customer requested 50sqft additional patio.", cost: 1200, status: "approved", createdAt: "2025-12-10" }
+        ],
+        invoices: [
+            { id: "inv-1", title: "Deposit / Mobilization", amount: 15000, status: "paid", dueDate: "2025-11-30", createdAt: "2025-11-20" },
+            { id: "inv-2", title: "Foundation Milestone", amount: 10000, status: "sent", dueDate: "2025-12-15", createdAt: "2025-12-10" }
         ]
     },
     {

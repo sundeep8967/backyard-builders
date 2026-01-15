@@ -12,13 +12,16 @@ import { RecentLogs } from "@/components/admin/recent-logs";
 import { DailyLogDialog } from "@/components/admin/daily-log-dialog";
 import { CreateChangeOrderDialog } from "@/components/admin/create-change-order-dialog";
 import { ChangeOrderList } from "@/components/admin/change-order-list";
-import { ChangeOrder } from "@/lib/admin/projects";
+import { CreateInvoiceDialog } from "@/components/admin/create-invoice-dialog";
+import { InvoiceList } from "@/components/admin/invoice-list";
+import { ChangeOrder, Invoice } from "@/lib/admin/projects";
 
 export default function ProjectDashboardPage() {
     const params = useParams();
     const projectId = params.id as string;
     const [logOpen, setLogOpen] = useState(false);
     const [changeOrderOpen, setChangeOrderOpen] = useState(false);
+    const [invoiceOpen, setInvoiceOpen] = useState(false);
 
     // In a real app, fetch execution would go here.
     // For now, finding in mock or creating a dummy if not found (since we are "creating" it from leads)
@@ -63,6 +66,20 @@ export default function ProjectDashboardPage() {
         });
     };
 
+    const handleSaveInvoice = (newInv: Omit<Invoice, "id" | "status" | "createdAt">) => {
+        const inv: Invoice = {
+            id: `inv-${Date.now()}`,
+            ...newInv,
+            status: "draft",
+            createdAt: new Date().toISOString()
+        };
+
+        setProject({
+            ...project,
+            invoices: [...(project.invoices || []), inv]
+        });
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -77,6 +94,7 @@ export default function ProjectDashboardPage() {
                 </div>
                 <div className="flex gap-2">
                     <Button variant="outline">Edit Details</Button>
+                    <Button variant="outline" onClick={() => setInvoiceOpen(true)}>Invoicing</Button>
                     <Button variant="secondary" onClick={() => setChangeOrderOpen(true)}>+ Change Order</Button>
                     <Button onClick={() => setLogOpen(true)}>Daily Log</Button>
                 </div>
@@ -139,6 +157,14 @@ export default function ProjectDashboardPage() {
                 <ChangeOrderList changeOrders={project.changeOrders} />
             </div>
 
+            {/* Invoicing */}
+            <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-bold text-zinc-900">Invoices</h2>
+                </div>
+                <InvoiceList invoices={project.invoices} />
+            </div>
+
             <DailyLogDialog
                 open={logOpen}
                 onOpenChange={setLogOpen}
@@ -149,6 +175,12 @@ export default function ProjectDashboardPage() {
                 open={changeOrderOpen}
                 onOpenChange={setChangeOrderOpen}
                 onSave={handleSaveChangeOrder}
+            />
+
+            <CreateInvoiceDialog
+                open={invoiceOpen}
+                onOpenChange={setInvoiceOpen}
+                onSave={handleSaveInvoice}
             />
         </div>
     );

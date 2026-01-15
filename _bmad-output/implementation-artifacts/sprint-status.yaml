@@ -81,7 +81,7 @@ development_status:
   5-2-construction-schedule: done
   5-3-daily-logs: done
   5-4-change-orders: done
-  5-5-invoicing-payments: backlog
+  5-5-invoicing-payments: done
   epic-5-retrospective: optional
 
   # Epic 6: Communication & Reporting
