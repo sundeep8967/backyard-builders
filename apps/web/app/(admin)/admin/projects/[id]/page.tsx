@@ -14,8 +14,9 @@ import { CreateChangeOrderDialog } from "@/components/admin/create-change-order-
 import { ChangeOrderList } from "@/components/admin/change-order-list";
 import { CreateInvoiceDialog } from "@/components/admin/create-invoice-dialog";
 import { InvoiceList } from "@/components/admin/invoice-list";
-import { ChangeOrder, Invoice, Message } from "@/lib/admin/projects";
 import { ProjectMessages } from "@/components/admin/project-messages";
+import { ProjectNotes } from "@/components/admin/project-notes";
+import { ChangeOrder, Invoice, Message, ProjectNote } from "@/lib/admin/projects";
 
 export default function ProjectDashboardPage() {
     const params = useParams();
@@ -93,6 +94,21 @@ export default function ProjectDashboardPage() {
         setProject({
             ...project,
             messages: [...(project.messages || []), newMessage]
+        });
+    };
+
+    const handleSaveNote = (content: string, isInternal: boolean) => {
+        const newNote: ProjectNote = {
+            id: `note-${Date.now()}`,
+            content,
+            author: "You",
+            timestamp: new Date().toISOString(),
+            isInternal
+        };
+
+        setProject({
+            ...project,
+            notes: [...(project.notes || []), newNote]
         });
     };
 
@@ -185,6 +201,7 @@ export default function ProjectDashboardPage() {
 
                 <div className="space-y-6 col-span-1">
                     <RecentLogs logs={project.logs} />
+                    <ProjectNotes notes={project.notes} onSaveNote={handleSaveNote} />
                     <ProjectMessages messages={project.messages} onSendMessage={handleSendMessage} />
                 </div>
             </div>

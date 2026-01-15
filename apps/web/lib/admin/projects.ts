@@ -16,6 +16,15 @@ export interface Project {
     changeOrders?: ChangeOrder[];
     invoices?: Invoice[];
     messages?: Message[];
+    notes?: ProjectNote[];
+}
+
+export interface ProjectNote {
+    id: string;
+    content: string;
+    author: string;
+    timestamp: string;
+    isInternal: boolean;
 }
 
 export interface Message {
@@ -92,6 +101,10 @@ export const MOCK_PROJECTS: Project[] = [
         messages: [
             { id: "msg-1", content: "Hi! When will the crew start tomorrow?", sender: "James (Client)", isAdmin: false, timestamp: "2025-12-05T18:00:00Z" },
             { id: "msg-2", content: "They will be there at 8 AM sharp.", sender: "Admin", isAdmin: true, timestamp: "2025-12-05T18:15:00Z" }
+        ],
+        notes: [
+            { id: "note-1", content: "Client mentioned they might travel during the holidays.", author: "Admin", timestamp: "2025-11-15T10:00:00Z", isInternal: true },
+            { id: "note-2", content: "Gate code is 1234.", author: "Admin", timestamp: "2025-11-20T09:00:00Z", isInternal: true }
         ]
     },
     {
