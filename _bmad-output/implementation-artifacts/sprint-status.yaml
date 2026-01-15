@@ -85,7 +85,7 @@ development_status:
   epic-5-retrospective: optional
 
   # Epic 6: Communication & Reporting
-  epic-6: in-progress
+  epic-6: done
   6-1-project-messaging-center: done
   6-2-internal-vs-external-notes: done
   6-3-rfi-workflow: done
@@ -93,8 +93,8 @@ development_status:
   epic-6-retrospective: optional
 
   # Epic 7: Warranty & Post-Completion
-  epic-7: backlog
-  7-1-warranty-registration: backlog
+  epic-7: in-progress
+  7-1-warranty-registration: done
   7-2-warranty-claim-submission: backlog
   7-3-claim-management: backlog
   epic-7-retrospective: optional

@@ -19,7 +19,9 @@ import { ProjectNotes } from "@/components/admin/project-notes";
 import { NotificationsPopover } from "@/components/admin/notifications-popover";
 import { CreateRFIDialog } from "@/components/admin/create-rfi-dialog";
 import { RFIList } from "@/components/admin/rfi-list";
-import { ChangeOrder, Invoice, Message, Notification, ProjectNote, RFI } from "@/lib/admin/projects";
+import { RegisterWarrantyDialog } from "@/components/admin/register-warranty-dialog";
+import { WarrantyList } from "@/components/admin/warranty-list";
+import { ChangeOrder, Invoice, Message, Notification, ProjectNote, RFI, Warranty } from "@/lib/admin/projects";
 
 export default function ProjectDashboardPage() {
     const params = useParams();
@@ -28,6 +30,7 @@ export default function ProjectDashboardPage() {
     const [changeOrderOpen, setChangeOrderOpen] = useState(false);
     const [invoiceOpen, setInvoiceOpen] = useState(false);
     const [rfiOpen, setRfiOpen] = useState(false);
+    const [warrantyOpen, setWarrantyOpen] = useState(false);
 
     // In a real app, fetch execution would go here.
     // For now, finding in mock or creating a dummy if not found (since we are "creating" it from leads)
@@ -137,6 +140,18 @@ export default function ProjectDashboardPage() {
         setProject({
             ...project,
             rfis: [...(project.rfis || []), rfi]
+        });
+    };
+    const handleSaveWarranty = (newWarranty: Omit<Warranty, "id" | "status">) => {
+        const warranty: Warranty = {
+            id: `war-${Date.now()}`,
+            ...newWarranty,
+            status: "Active"
+        };
+
+        setProject({
+            ...project,
+            warranties: [...(project.warranties || []), warranty]
         });
     };
 
@@ -277,6 +292,15 @@ export default function ProjectDashboardPage() {
                         </div>
                         <RFIList rfis={project.rfis} onSimulateAnswer={handleSimulateAnswerRFI} />
                     </div>
+
+                    {/* Warranties */}
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-zinc-900">Warranty</h2>
+                            <Button variant="outline" size="sm" onClick={() => setWarrantyOpen(true)}>+ Register</Button>
+                        </div>
+                        <WarrantyList warranties={project.warranties} />
+                    </div>
                 </div>
 
                 <div className="space-y-6 col-span-1">
@@ -308,6 +332,12 @@ export default function ProjectDashboardPage() {
                 open={rfiOpen}
                 onOpenChange={setRfiOpen}
                 onSave={handleSaveRFI}
+            />
+
+            <RegisterWarrantyDialog
+                open={warrantyOpen}
+                onOpenChange={setWarrantyOpen}
+                onSave={handleSaveWarranty}
             />
         </div>
     );
