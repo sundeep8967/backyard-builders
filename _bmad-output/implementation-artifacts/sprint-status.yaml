@@ -45,7 +45,7 @@ development_status:
   1-1-project-infrastructure-base-layout: review
   1-2-authentication-with-clerk: deferred  # Removed Clerk, will use Supabase Auth with Google later
   1-3-user-household-data-model: review
-  1-4-admin-portal-base-rbac: backlog
+  1-4-admin-portal-base-rbac: in-progress
   1-5-navigation-dashboard-shell: review
   epic-1-retrospective: optional
 
@@ -55,7 +55,7 @@ development_status:
   2-2-multi-step-account-creation-form: review
   2-3-address-verification-google-maps: backlog
   2-4-atomic-account-creation-transaction: backlog
-  2-5-property-profile-creation-dashboard-unlock: backlog
+  2-5-property-profile-creation-dashboard-unlock: done
   epic-2-retrospective: optional
 
   # Epic 3: Estimates & Design Center
@@ -93,7 +93,7 @@ development_status:
   epic-6-retrospective: optional
 
   # Epic 7: Warranty & Post-Completion
-  epic-7: in-progress
+  epic-7: done
   7-1-warranty-registration: done
   7-2-warranty-claim-submission: done
   7-3-claim-management: done

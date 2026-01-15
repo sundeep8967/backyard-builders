@@ -37,7 +37,8 @@ export default function EstimatesPage() {
                             <p className="text-sm text-zinc-500">Est. Cost</p>
                             <p className="text-xl font-bold text-white">$14,040</p>
                         </div>
-                        <Button asChild variant="outline" size="sm" className="border-zinc-700 text-white hover:bg-zinc-800">
+
+                        <Button asChild variant="outline" size="sm" className="border-zinc-700 text-white hover:bg-zinc-800 bg-transparent">
                             <Link href="/dashboard/proposals/demo">View Proposal</Link>
                         </Button>
                     </div>
@@ -68,7 +69,7 @@ export default function EstimatesPage() {
                 <Button
                     asChild
                     variant="outline"
-                    className="mt-4 border-zinc-700 text-white hover:bg-zinc-800"
+                    className="mt-4 border-zinc-700 text-white hover:bg-zinc-800 bg-transparent"
                 >
                     <Link href="/dashboard/estimates/new">Create Estimate</Link>
                 </Button>

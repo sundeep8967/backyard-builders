@@ -103,9 +103,15 @@ export default function Home() {
         </div>
       </section>
 
+
       {/* Footer */}
       <footer className="border-t border-zinc-800 px-6 py-8 text-center text-sm text-zinc-500">
-        © 2024 Backyard Builders. All rights reserved.
+        <p>© 2024 Backyard Builders. All rights reserved.</p>
+        <div className="mt-4">
+          <Link href="/admin/login" className="text-zinc-700 hover:text-zinc-500 transition-colors text-xs">
+            Admin Portal
+          </Link>
+        </div>
       </footer>
     </main>
   );

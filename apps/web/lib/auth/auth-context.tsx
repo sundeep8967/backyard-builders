@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -21,6 +22,8 @@ interface AuthContextType {
     signInWithGoogle: () => Promise<void>;
     signOut: () => Promise<void>;
     isDemoMode: boolean;
+    role: "admin" | "customer";
+    toggleAdminMode: () => void; // Quick hack for demo purposes
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -28,6 +31,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const [role, setRole] = useState<"admin" | "customer">("customer");
 
     // Check if Firebase is properly configured
     const isDemoMode = !process.env.NEXT_PUBLIC_FIREBASE_API_KEY ||
@@ -52,9 +56,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             return;
         }
 
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setUser(user);
             setLoading(false);
+
+            // In a real app, we would fetch the role from the backend here
+            // const { role } = await fetchUserRole(user.uid);
+            // setRole(role);
         });
 
         return () => unsubscribe();
@@ -98,6 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const signOut = async () => {
+        setRole("customer"); // Reset role on sign out
         if (isDemoMode) {
             setUser(null);
             return;
@@ -114,9 +123,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const toggleAdminMode = () => {
+        setRole(prev => prev === "admin" ? "customer" : "admin");
+    };
+
     return (
         <AuthContext.Provider
-            value={{ user, loading, signInWithGoogle, signOut, isDemoMode }}
+            value={{ user, loading, signInWithGoogle, signOut, isDemoMode, role, toggleAdminMode }}
         >
             {children}
         </AuthContext.Provider>
@@ -130,3 +143,4 @@ export function useAuth() {
     }
     return context;
 }
+

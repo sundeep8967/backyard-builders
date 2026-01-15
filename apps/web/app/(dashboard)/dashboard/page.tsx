@@ -1,33 +1,37 @@
 import { FileText, Home, TrendingUp, Users } from "lucide-react";
+import Link from "next/link";
+import { getProperties } from "@/lib/customer/properties";
 
-const stats = [
-    {
-        title: "Properties",
-        value: "0",
-        description: "Active properties",
-        icon: Home,
-    },
-    {
-        title: "Estimates",
-        value: "0",
-        description: "Pending estimates",
-        icon: FileText,
-    },
-    {
-        title: "Projects",
-        value: "0",
-        description: "In progress",
-        icon: TrendingUp,
-    },
-    {
-        title: "Team",
-        value: "1",
-        description: "Household members",
-        icon: Users,
-    },
-];
+export default async function DashboardPage() {
+    const properties = await getProperties();
 
-export default function DashboardPage() {
+    const stats = [
+        {
+            title: "Properties",
+            value: properties.length.toString(),
+            description: "Active properties",
+            icon: Home,
+        },
+        {
+            title: "Estimates",
+            value: "0",
+            description: "Pending estimates",
+            icon: FileText,
+        },
+        {
+            title: "Projects",
+            value: "0",
+            description: "In progress",
+            icon: TrendingUp,
+        },
+        {
+            title: "Team",
+            value: "1",
+            description: "Household members",
+            icon: Users,
+        },
+    ];
+
     return (
         <div className="space-y-8">
             {/* Welcome */}
@@ -66,12 +70,18 @@ export default function DashboardPage() {
                     Get started by adding your first property.
                 </p>
                 <div className="mt-4 flex gap-4">
-                    <button className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-100 transition-colors">
+                    <Link
+                        href="/dashboard/properties/new"
+                        className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-100 transition-colors"
+                    >
                         Add Property
-                    </button>
-                    <button className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 transition-colors">
+                    </Link>
+                    <Link
+                        href="/dashboard/estimates/new"
+                        className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 transition-colors"
+                    >
                         Request Estimate
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>

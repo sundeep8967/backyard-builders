@@ -3,16 +3,34 @@
 import { useAuth } from "@/lib/auth/auth-context";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { ShieldAlert } from "lucide-react";
 
-export default function SignInPage() {
-    const { user, loading, signInWithGoogle, isDemoMode, role, toggleAdminMode } = useAuth();
+export default function AdminLoginPage() {
+    const { user, loading, signInWithGoogle, role, toggleAdminMode } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
-        if (!loading && user) {
-            router.push("/dashboard");
+        // If logged in and IS admin, go to dashboard
+        if (!loading && user && role === 'admin') {
+            router.push("/admin/dashboard");
         }
-    }, [user, loading, router]);
+        // If logged in but NOT admin (and not loading), maybe warn or auto-switch for demo
+        else if (!loading && user && role !== 'admin') {
+            // For demo convenience, we might just sign them out or show "Unauthorized"
+            // implementation detail: user needs to be 'admin'
+        }
+    }, [user, loading, role, router]);
+
+    const handleAdminLogin = async () => {
+        // 1. Ensure we are in 'admin' mode for the demo context
+        if (role !== 'admin') {
+            toggleAdminMode();
+        }
+        // 2. Perform sign in
+        await signInWithGoogle();
+        // 3. Router redirect is handled by useEffect or promise resolution
+        router.push("/admin/dashboard");
+    };
 
     if (loading) {
         return (
@@ -25,47 +43,23 @@ export default function SignInPage() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-950 p-6">
             <div className="w-full max-w-md space-y-8">
-                {/* Logo */}
+                {/* Admin Logo */}
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold text-white">Backyard Builders</h1>
+                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-900 border border-zinc-800">
+                        <ShieldAlert className="h-6 w-6 text-red-500" />
+                    </div>
+                    <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
                     <p className="mt-2 text-zinc-400">
-                        Premium outdoor living spaces
+                        Restricted access for authorized personnel only.
                     </p>
                 </div>
 
-                {/* Demo Mode Banner */}
-                {isDemoMode && (
-                    <div className="rounded-lg border border-amber-500/50 bg-amber-500/10 p-4 text-center">
-                        <p className="text-sm text-amber-400">
-                            🔧 Demo Mode - Firebase not configured
-                        </p>
-                        <p className="mt-1 text-xs text-amber-500/70">
-                            Click below to continue with demo data
-                        </p>
-                    </div>
-                )}
-
                 {/* Sign In Card */}
                 <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-8">
-                    <h2 className="text-xl font-semibold text-white text-center">
-                        Welcome back
-                    </h2>
-                    <p className="mt-2 text-sm text-zinc-400 text-center">
-                        Sign in to access your dashboard
-                    </p>
-
-                    <div className="mt-8 space-y-4">
-
-
-                        {/* Google Sign In */}
+                    <div className="space-y-4">
                         <button
-                            onClick={() => {
-                                // Ensure we are in customer mode
-                                if (role === 'admin') toggleAdminMode();
-                                signInWithGoogle();
-                            }}
-
-                            className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-700 bg-white px-4 py-3 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100"
+                            onClick={handleAdminLogin}
+                            className="flex w-full items-center justify-center gap-3 rounded-lg bg-white px-4 py-3 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-200"
                         >
                             <svg className="h-5 w-5" viewBox="0 0 24 24">
                                 <path
@@ -85,15 +79,10 @@ export default function SignInPage() {
                                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                                 />
                             </svg>
-                            {isDemoMode ? "Continue with Demo" : "Continue with Google"}
+                            Sign in as Administrator
                         </button>
                     </div>
                 </div>
-
-                {/* Footer */}
-                <p className="text-center text-xs text-zinc-500">
-                    By signing in, you agree to our Terms of Service and Privacy Policy
-                </p>
             </div>
         </div>
     );
