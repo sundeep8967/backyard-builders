@@ -19,6 +19,9 @@ import Image from "next/image";
 interface EstimateItem {
     service: ServiceOption;
     materialId: string;
+    // New fields for Story 3.4
+    colorId?: string;
+    patternId?: string;
     size: number;
     price: number;
 }
@@ -27,15 +30,21 @@ export default function NewEstimatePage() {
     const [step, setStep] = useState<"select" | "configure" | "summary">("select");
     const [selectedService, setSelectedService] = useState<ServiceOption | null>(null);
     const [selectedMaterial, setSelectedMaterial] = useState<string>("");
+    const [selectedColor, setSelectedColor] = useState<string>("");
+    const [selectedPattern, setSelectedPattern] = useState<string>("");
     const [size, setSize] = useState<number>(0);
     const [cart, setCart] = useState<EstimateItem[]>([]);
 
     // Handle service selection
     const handleSelectService = (service: ServiceOption) => {
         setSelectedService(service);
-        setSelectedMaterial(
-            service.materials.find((m) => m.popular)?.id || service.materials[0].id
-        );
+        const firstMaterial = service.materials.find((m) => m.popular) || service.materials[0];
+        setSelectedMaterial(firstMaterial.id);
+
+        // Reset sub-options
+        setSelectedColor("");
+        setSelectedPattern("");
+
         setSize(service.defaultSize);
         setStep("configure");
     };
@@ -50,6 +59,8 @@ export default function NewEstimatePage() {
             {
                 service: selectedService,
                 materialId: selectedMaterial,
+                colorId: selectedColor,
+                patternId: selectedPattern,
                 size,
                 price: price.total,
             },
@@ -69,8 +80,11 @@ export default function NewEstimatePage() {
 
     // Current price preview
     const currentPrice = selectedService
-        ? calculatePrice(selectedService, selectedMaterial, size)
+        ? calculatePrice(selectedService, selectedMaterial, size, selectedColor, selectedPattern)
         : null;
+
+    // Get current material object to check for colors/patterns
+    const currentMaterialObj = selectedService?.materials.find(m => m.id === selectedMaterial);
 
     return (
         <div className="space-y-6">
@@ -140,6 +154,15 @@ export default function NewEstimatePage() {
                             <ArrowLeft className="h-4 w-4" />
                             Back to services
                         </button>
+
+                        {/* Breadcrumbs / Progress */}
+                        <div className="flex items-center gap-2 text-sm text-zinc-500">
+                            <span className="text-white">Service</span>
+                            <span>/</span>
+                            <span className="text-white">Configure</span>
+                            <span>/</span>
+                            <span>Review</span>
+                        </div>
 
                         {/* Service Header */}
                         <div className="flex items-center gap-4">
@@ -234,6 +257,65 @@ export default function NewEstimatePage() {
                                 ))}
                             </div>
                         </div>
+
+                        {/* Colors (if available) */}
+                        {currentMaterialObj?.colors && currentMaterialObj.colors.length > 0 && (
+                            <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-6">
+                                <h3 className="font-medium text-white">Color</h3>
+                                <div className="mt-4 flex flex-wrap gap-3">
+                                    {currentMaterialObj.colors.map((color) => (
+                                        <button
+                                            key={color.id}
+                                            onClick={() => setSelectedColor(color.id === selectedColor ? "" : color.id)}
+                                            className={`group relative flex flex-col items-center gap-2 rounded-lg border p-3 transition-all ${selectedColor === color.id
+                                                ? "border-white bg-zinc-800"
+                                                : "border-zinc-700 hover:border-zinc-600"
+                                                }`}
+                                        >
+                                            <div
+                                                className="h-12 w-12 rounded-full border border-zinc-600 shadow-sm"
+                                                style={{ backgroundColor: color.hex }}
+                                            />
+                                            <span className="text-xs font-medium text-zinc-300">{color.name}</span>
+                                            {selectedColor === color.id && (
+                                                <div className="absolute right-1 top-1 rounded-full bg-white p-0.5">
+                                                    <Check className="h-3 w-3 text-zinc-900" />
+                                                </div>
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Patterns (if available) */}
+                        {currentMaterialObj?.patterns && currentMaterialObj.patterns.length > 0 && (
+                            <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-6">
+                                <h3 className="font-medium text-white">Pattern</h3>
+                                <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                                    {currentMaterialObj.patterns.map((pattern) => (
+                                        <button
+                                            key={pattern.id}
+                                            onClick={() => setSelectedPattern(pattern.id === selectedPattern ? "" : pattern.id)}
+                                            className={`relative rounded-lg border p-3 text-left transition-all ${selectedPattern === pattern.id
+                                                ? "border-white bg-zinc-800"
+                                                : "border-zinc-700 hover:border-zinc-600"
+                                                }`}
+                                        >
+                                            <span className="font-medium text-zinc-300">{pattern.name}</span>
+                                            {pattern.priceModifier > 0 && (
+                                                <span className="ml-2 text-xs text-zinc-500">
+                                                    +{Math.round(pattern.priceModifier * 100)}%
+                                                </span>
+                                            )}
+                                            {selectedPattern === pattern.id && (
+                                                <Check className="absolute right-3 top-3 h-4 w-4 text-white" />
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Right: Price Summary */}
@@ -256,6 +338,14 @@ export default function NewEstimatePage() {
                                             <span className="text-zinc-400">Material upgrade</span>
                                             <span className="text-white">
                                                 +${currentPrice.material.toLocaleString()}
+                                            </span>
+                                        </div>
+                                    )}
+                                    {currentPrice.extras > 0 && (
+                                        <div className="flex justify-between text-sm">
+                                            <span className="text-zinc-400">Extras (Color/Pattern)</span>
+                                            <span className="text-white">
+                                                +${currentPrice.extras.toLocaleString()}
                                             </span>
                                         </div>
                                     )}

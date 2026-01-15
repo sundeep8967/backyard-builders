@@ -11,6 +11,12 @@ export interface ServiceOption {
     maxSize: number;
     defaultSize: number;
     materials: MaterialOption[];
+
+    // New fields for Story 3.4
+    materialDefaults?: {
+        color?: string;
+        pattern?: string;
+    };
 }
 
 export interface MaterialOption {
@@ -19,6 +25,25 @@ export interface MaterialOption {
     description: string;
     priceModifier: number; // Multiplier (1.0 = base, 1.5 = 50% more)
     popular?: boolean;
+    image?: string; // Swatch image
+
+    // New Advanced Options
+    colors?: MaterialColor[];
+    patterns?: MaterialPattern[];
+}
+
+export interface MaterialColor {
+    id: string;
+    name: string;
+    hex: string;
+    priceModifier?: number; // Extra cost for premium colors
+}
+
+export interface MaterialPattern {
+    id: string;
+    name: string;
+    image?: string;
+    priceModifier: number; // Extra cost for complex patterns
 }
 
 export interface SizeOption {
@@ -39,9 +64,43 @@ export const SERVICES: ServiceOption[] = [
         maxSize: 1000,
         defaultSize: 300,
         materials: [
-            { id: "concrete", name: "Standard Concrete", description: "Durable and economical", priceModifier: 1.0 },
-            { id: "stamped", name: "Stamped Concrete", description: "Decorative patterns", priceModifier: 1.4, popular: true },
-            { id: "pavers", name: "Concrete Pavers", description: "Interlocking paver stones", priceModifier: 1.8 },
+            {
+                id: "concrete",
+                name: "Standard Concrete",
+                description: "Durable and economical",
+                priceModifier: 1.0,
+                colors: [
+                    { id: "natural", name: "Natural Grey", hex: "#A9A9A9" },
+                    { id: "sand", name: "Sand", hex: "#C2B280", priceModifier: 0.1 }
+                ]
+            },
+            {
+                id: "stamped",
+                name: "Stamped Concrete",
+                description: "Decorative patterns",
+                priceModifier: 1.4,
+                popular: true,
+                patterns: [
+                    { id: "ashlar", name: "Ashlar Slate", priceModifier: 0 },
+                    { id: "cobble", name: "Cobblestone", priceModifier: 0.1 },
+                    { id: "wood", name: "Wood Plank", priceModifier: 0.2 }
+                ]
+            },
+            {
+                id: "pavers",
+                name: "Concrete Pavers",
+                description: "Interlocking paver stones",
+                priceModifier: 1.8,
+                colors: [
+                    { id: "grey", name: "Charcoal", hex: "#36454F" },
+                    { id: "red", name: "Terracotta", hex: "#E2725B" },
+                    { id: "beige", name: "Cream", hex: "#F5F5DC" }
+                ],
+                patterns: [
+                    { id: "running", name: "Running Bond", priceModifier: 0 },
+                    { id: "herringbone", name: "Herringbone", priceModifier: 0.15 }
+                ]
+            },
             { id: "travertine", name: "Travertine", description: "Premium natural stone", priceModifier: 2.5 },
         ],
     },
@@ -135,9 +194,15 @@ export const SERVICES: ServiceOption[] = [
 export function calculatePrice(
     service: ServiceOption,
     materialId: string,
-    size: number
-): { base: number; material: number; total: number; breakdown: string } {
+    size: number,
+    colorId?: string,
+    patternId?: string
+): { base: number; material: number; extras: number; total: number; breakdown: string } {
     const material = service.materials.find((m) => m.id === materialId) || service.materials[0];
+
+    // Find sub-options
+    const color = material.colors?.find(c => c.id === colorId);
+    const pattern = material.patterns?.find(p => p.id === patternId);
 
     let base: number;
     let sizeLabel: string;
@@ -156,11 +221,19 @@ export function calculatePrice(
     }
 
     const materialCost = base * (material.priceModifier - 1);
-    const total = base * material.priceModifier;
+
+    // Calculate extras (color/pattern premiums)
+    // Apply modifiers to the BASE price, not the compounded price
+    const colorPremium = color?.priceModifier ? base * color.priceModifier : 0;
+    const patternPremium = pattern?.priceModifier ? base * pattern.priceModifier : 0;
+    const extras = colorPremium + patternPremium;
+
+    const total = base + materialCost + extras;
 
     return {
         base: Math.round(base),
         material: Math.round(materialCost),
+        extras: Math.round(extras),
         total: Math.round(total),
         breakdown: sizeLabel,
     };
