@@ -29,6 +29,7 @@ export interface WarrantyClaim {
     title: string;
     description: string;
     status: "Submitted" | "In Review" | "Approved" | "Rejected" | "Completed";
+    resolutionNotes?: string;
     createdAt: string;
 }
 

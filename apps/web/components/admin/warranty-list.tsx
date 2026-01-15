@@ -8,9 +8,10 @@ interface WarrantyListProps {
     warranties: Warranty[] | undefined;
     claims: WarrantyClaim[] | undefined;
     onFileClaim: (warrantyId: string) => void;
+    onManageClaim: (claim: WarrantyClaim) => void;
 }
 
-export function WarrantyList({ warranties, claims, onFileClaim }: WarrantyListProps) {
+export function WarrantyList({ warranties, claims, onFileClaim, onManageClaim }: WarrantyListProps) {
     if (!warranties || warranties.length === 0) {
         return (
             <div className="rounded-lg border border-dashed border-zinc-200 bg-zinc-50 p-6 text-center text-zinc-500">
@@ -61,7 +62,11 @@ export function WarrantyList({ warranties, claims, onFileClaim }: WarrantyListPr
                         <div className="mt-4 pt-4 border-t space-y-2">
                             <h5 className="text-xs font-semibold text-zinc-900">Active Claims</h5>
                             {claims.filter(c => c.warrantyId === w.id).map(claim => (
-                                <div key={claim.id} className="bg-red-50 border border-red-100 p-2 rounded flex justify-between items-center">
+                                <div
+                                    key={claim.id}
+                                    className="bg-red-50 border border-red-100 p-2 rounded flex justify-between items-center cursor-pointer hover:bg-red-100 transition-colors"
+                                    onClick={() => onManageClaim(claim)}
+                                >
                                     <div className="flex items-center gap-2">
                                         <AlertTriangle className="h-3 w-3 text-red-600" />
                                         <span className="text-xs text-red-900 font-medium">{claim.title}</span>

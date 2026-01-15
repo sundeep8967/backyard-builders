@@ -19,6 +19,7 @@ import { ProjectNotes } from "@/components/admin/project-notes";
 import { NotificationsPopover } from "@/components/admin/notifications-popover";
 import { CreateRFIDialog } from "@/components/admin/create-rfi-dialog";
 import { RFIList } from "@/components/admin/rfi-list";
+import { ManageClaimDialog } from "@/components/admin/manage-claim-dialog";
 import { SubmitClaimDialog } from "@/components/admin/submit-claim-dialog";
 import { RegisterWarrantyDialog } from "@/components/admin/register-warranty-dialog";
 import { WarrantyList } from "@/components/admin/warranty-list";
@@ -33,7 +34,9 @@ export default function ProjectDashboardPage() {
     const [rfiOpen, setRfiOpen] = useState(false);
     const [warrantyOpen, setWarrantyOpen] = useState(false);
     const [claimOpen, setClaimOpen] = useState(false);
+    const [manageClaimOpen, setManageClaimOpen] = useState(false);
     const [selectedWarrantyId, setSelectedWarrantyId] = useState<string>("");
+    const [selectedClaim, setSelectedClaim] = useState<WarrantyClaim | undefined>(undefined);
 
     // In a real app, fetch execution would go here.
     // For now, finding in mock or creating a dummy if not found (since we are "creating" it from leads)
@@ -175,6 +178,20 @@ export default function ProjectDashboardPage() {
         setProject({
             ...project,
             claims: [...(project.claims || []), claim]
+        });
+    };
+
+    const handleManageClaim = (claim: WarrantyClaim) => {
+        setSelectedClaim(claim);
+        setManageClaimOpen(true);
+    };
+
+    const handleUpdateClaim = (updatedClaim: WarrantyClaim) => {
+        setProject({
+            ...project,
+            claims: (project.claims || []).map(c =>
+                c.id === updatedClaim.id ? updatedClaim : c
+            )
         });
     };
 
@@ -326,6 +343,7 @@ export default function ProjectDashboardPage() {
                             warranties={project.warranties}
                             claims={project.claims}
                             onFileClaim={handleFileClaim}
+                            onManageClaim={handleManageClaim}
                         />
                     </div>
                 </div>
@@ -373,6 +391,13 @@ export default function ProjectDashboardPage() {
                 warrantyId={selectedWarrantyId}
                 onSave={handleSaveClaim}
             />
-        </div>
+
+            <ManageClaimDialog
+                open={manageClaimOpen}
+                onOpenChange={setManageClaimOpen}
+                claim={selectedClaim}
+                onSave={handleUpdateClaim}
+            />
+        </div >
     );
 }
